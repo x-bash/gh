@@ -73,10 +73,10 @@ option:
     local has_wiki=true
     local can_comment=true
     local auto_init=true
-    [ -n "$no_issues" ] && has_issues=false
-    [ -n "$no_wiki" ] && has_wiki=false
-    [ -n "$no_comment" ] && can_comment=false
-    [ -n "$no_auto_init" ] && auto_init=false
+    [ -n "$no_issues" ] &&      has_issues=false
+    [ -n "$no_wiki" ] &&        has_wiki=false
+    [ -n "$no_comment" ] &&     can_comment=false
+    [ -n "$no_auto_init" ] &&   auto_init=false
 
     [ $# -eq 0 ] && ___x_cmd_gh_log info "repo create name is null" && return
     local name
