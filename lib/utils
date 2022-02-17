@@ -4,59 +4,59 @@
 ############################
 # Section 2: Wrapping std/http module with object naming changing
 ############################
-___gt_resp_header() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" resp header "$@"
+___x_cmd_gh_resp_header() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" resp header "$@"
 }
 
 # TODO: Not supported yet
-___gt_resp_body() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" resp body "$@"
+___x_cmd_gh_resp_body() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" resp body "$@"
 }
 
-___gt_get() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" get "$@"
+___x_cmd_gh_get() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" get "$@"
 }
 
-___gt_get_multi() {
+___x_cmd_gh_get_multi() {
     if [ -n "$page" ] || [ -n "$per_page" ]; then
-        ___gt_get "$@" page per_page
+        ___x_cmd_gh_get "$@" page per_page
         return
     fi
     local i=1 
     local total_page=100000
     while [ "$i" -le "$total_page" ]; do
-        ___gt_get "$@" page="$i" per_page=100
-        total_page="$(___gt_resp_header "total_page")"
+        ___x_cmd_gh_get "$@" page="$i" per_page=100
+        total_page="$(___x_cmd_gh_resp_header "total_page")"
         [ -z "$total_page" ] && return
         # echo "total_page:$total_page" >&2
         i=$((i+1))
     done
 }
 
-# gt_post(){ O="_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" http_post "$@"; }
-___gt_post_json() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" post  json "$@"
+# gt_post(){ O="___x_cmd_gh_${O:-GITEE_DEFAULT}" http_post "$@"; }
+___x_cmd_gh_post_json() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" post  json "$@"
 }
 
-# gt_put(){ O="_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" http_put "$@"; }
-___gt_put_json() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" put json "$@"
+# gt_put(){ O="___x_cmd_gh_${O:-GITEE_DEFAULT}" http_put "$@"; }
+___x_cmd_gh_put_json() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" put json "$@"
 }
 
-___gt_patch_json() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" patch json "$@"
+___x_cmd_gh_patch_json() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" patch json "$@"
 }
 
-___gt_delete() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" delete "$@"
+___x_cmd_gh_delete() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" delete "$@"
 }
 
-___gt_dict_get() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" dict "$@"
+___x_cmd_gh_dict_get() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" dict "$@"
 }
 
-___gt_dict_put() {
-    http "@_x_cmd_x_bash_gitee_${O:-GITEE_DEFAULT}" dict "$@"
+___x_cmd_gh_dict_put() {
+    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" dict "$@"
 }
 
 
@@ -66,10 +66,10 @@ ___gt_dict_put() {
 
 alias gt_param_init_owner_repo='
     local owner_repo
-    ___gt_param_normalize_repo  || return
+    ___x_cmd_gh_param_normalize_repo  || return
 '
 
-___gt_param_normalize_repo() {
+___x_cmd_gh_param_normalize_repo() {
     local op="$repo"
     [ -z "$op" ] && op="$1"
     case "$op" in
@@ -106,7 +106,7 @@ ___gt_param_normalize_repo() {
 
 ### Repo #1
 
-___gt_parse_owner_repo() {
+___x_cmd_gh_parse_owner_repo() {
     local O="${O:-GITEE_DEFAULT}"
     if [ -z "$repo" ]; then
         repo="$(gt_current_repo)"
@@ -121,11 +121,11 @@ ___gt_parse_owner_repo() {
     fi
 }
 
-___gt_cache(){
+___x_cmd_gh_cache(){
     ccmd -- eval "$@"
 }
 
-___gt_table() {
+___x_cmd_gh_table() {
     local tmp
     tmp=$1
     shift

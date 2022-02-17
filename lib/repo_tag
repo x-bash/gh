@@ -26,7 +26,7 @@ options:
     param:run
 
     gt_param_init_owner_repo
-    ___gt_get "/v5/repos/${owner_repo}/tags"   
+    ___x_cmd_gh_get "/v5/repos/${owner_repo}/tags"   
 }
 
 
@@ -44,6 +44,6 @@ options:
 '
     param:run
     gt_param_init_owner_repo
-    ___gt_post_json "/v5/repos/${owner_repo}/tags" \
+    ___x_cmd_gh_post_json "/v5/repos/${owner_repo}/tags" \
         refs tag_message="$msg" tag_name="$name"  
 }

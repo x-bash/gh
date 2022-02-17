@@ -83,7 +83,7 @@ option:
     for name in "$@"; do
         {
             local data repo_id url repo_owner
-            data=$(___gt_post_json "/v5/user/repos" name="${name##*/}" description homepage has_issues has_wiki can_comment \
+            data=$(___x_cmd_gh_post_json "/v5/user/repos" name="${name##*/}" description homepage has_issues has_wiki can_comment \
             auto_init gitignore_template license_template path="$paths" private 2>/dev/null)
             ___json_awk_get repo_id=.id url=.html_url repo_owner=.owner.login <<A
             $data
@@ -142,17 +142,17 @@ option:
     # TODO:owner may be personal
     local name
     for name in "$@"; do
-        # name="$(___gt_param_normalize_repo "$name")"
+        # name="$(___x_cmd_gh_param_normalize_repo "$name")"
         # owner="$(echo "$name" | cut -d / -f 1)"
         # name="$(echo "$name" | cut -d / -f 2)"
         local resp
         {
-            ___gt_post_json "/v5/orgs/$org/repos" name description homepage has_issues has_wiki can_comment auto_init \
+            ___x_cmd_gh_post_json "/v5/orgs/$org/repos" name description homepage has_issues has_wiki can_comment auto_init \
              gitignore_template license_template path="$paths" public
             code=$?
             if [ $code -ne 0 ]; then
                 gt_log error "Creating repo failure: $name. Code is $code. "
-                # ___gt_resp_header "" >&2
+                # ___x_cmd_gh_resp_header "" >&2
                 return $code
             fi
         } 
@@ -204,7 +204,7 @@ option:
     local name
     for name in "$@"; do
     {
-        ___gt_post_json "/v5/enterprises/${enterprise##*/}/repos" \
+        ___x_cmd_gh_post_json "/v5/enterprises/${enterprise##*/}/repos" \
             name description homepage has_issues can_comment auto_init \
             gitignore_template license_template path="$paths" private enterprise outsourced project_creator members
             code=$?
@@ -235,7 +235,7 @@ gt_repo_ls() {
     fi
 
     local owner_type
-    owner_type="$(___gt_owner_type_query "$owner")"
+    owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
     if [ -n "$owner_type" ] && [ -n "$owner" ]; then
         "gt_${owner_type}_repo" ls "$@"
         return
@@ -258,8 +258,8 @@ options:
     param:run
 
     gt_param_init_owner_repo
-    ___gt_get "/v5/repos/${owner_repo}"
-    # ___gt_get "/v5/repos/${owner}/${repo}"
+    ___x_cmd_gh_get "/v5/repos/${owner_repo}"
+    # ___x_cmd_gh_get "/v5/repos/${owner}/${repo}"
 }
 
 # https://gitee.com/api/v5/swagger#/deleteV5ReposOwnerRepo
@@ -275,8 +275,8 @@ options:
     [ "$confirm" = "no" ] && return
     local i
     for i in "$@"; do
-        ___gt_param_normalize_repo "$i"
-        ___gt_delete "/v5/repos/$owner_repo" >/dev/null 
+        ___x_cmd_gh_param_normalize_repo "$i"
+        ___x_cmd_gh_delete "/v5/repos/$owner_repo" >/dev/null 
         if [ $? -eq 0 ]; then
             ui tf "true" "deleted repo $i"
         else
@@ -297,7 +297,7 @@ options:
     local confirm
     confirm=$(ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
     [ "$confirm" = "no" ] && return
-    ___gt_put_json "/v5/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
+    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
     gt_log error "clear repo failure: $owner_repo"
 }
 
@@ -313,5 +313,5 @@ options:
 '
     param:run
     gt_param_init_owner_repo
-    ___gt_put_json "/v5/repos/${owner_repo}/reviewer" assignees testers assignees_number testers_number
+    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/reviewer" assignees testers assignees_number testers_number
 }

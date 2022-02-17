@@ -48,10 +48,10 @@ options:
 
     admin=${admin:-false}
     if [ $# -eq 0 ]; then
-        ___gt_get_multi "/v5/user/orgs" admin page per_page
+        ___x_cmd_gh_get_multi "/v5/user/orgs" admin page per_page
         [ $? -eq 1 ] && return 1
     else
-        ___gt_get "/v5/orgs/${1:?Provide organization}"
+        ___x_cmd_gh_get "/v5/orgs/${1:?Provide organization}"
         [ $? -eq 1 ] && return 1
     fi
     return 0
@@ -68,7 +68,7 @@ options:
 '
     param:run
     org=${org:-$1}
-    ___gt_post_json "/v5/users/organization" name="$1" org description  
+    ___x_cmd_gh_post_json "/v5/users/organization" name="$1" org description  
 }
 
 gt_org_repo(){
@@ -93,7 +93,7 @@ options:
     --type     "type"     <>="all"    = all private public
 '
     param:run
-    ui table func ___gt_table "\"\$(O=$O ___gt_get_multi \"/v5/orgs/${1:?Provide organization}/repos\" type)\"" \
+    ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/orgs/${1:?Provide organization}/repos\" type)\"" \
         . id full_name ownerName=owner.name updatedTime="updated_at"
 }
 
@@ -110,7 +110,7 @@ options:
     fi
         for org in "$@"; do
         {
-            ___gt_delete "/v5/user/memberships/orgs/${org##*/}"
+            ___x_cmd_gh_delete "/v5/user/memberships/orgs/${org##*/}"
         code=$?
             if [ $code -ne 0 ]; then
                 echo "Creating repo failure: $name. Code is $code. " >&2
@@ -157,7 +157,7 @@ options:
     --role          "Repo name"            <>="all"         = admin member all
 '
     param:run
-    ___gt_get_multi "/v5/orgs/${org##*/}/members" role page per_page  
+    ___x_cmd_gh_get_multi "/v5/orgs/${org##*/}/members" role page per_page  
 }
 
 gt_org_member_user() {
@@ -169,7 +169,7 @@ options:
 '
     param:run
 
-    ___gt_get "/v5/orgs/${org##*/}/memberships/${username##*/}"  
+    ___x_cmd_gh_get "/v5/orgs/${org##*/}/memberships/${username##*/}"  
 }
 
 gt_org_member_add() {
@@ -184,7 +184,7 @@ options:
 '
     param:run
 
-    # repo="$(___gt_param_normalize_repo "$repo")" || return 1
+    # repo="$(___x_cmd_gh_param_normalize_repo "$repo")" || return 1
     if [ -z "$1" ];then
         echo "At least one user’s spatial address is needed"
         return 1
@@ -192,7 +192,7 @@ options:
 
         for username in "$@"; do
         {
-            ___gt_put_json "/v5/orgs/${org##*/}/memberships/${username##*/}" role
+            ___x_cmd_gh_put_json "/v5/orgs/${org##*/}/memberships/${username##*/}" role
             local code=$?
             if [ $code -ne 0 ]; then
                 echo "Creating repo failure: $username. Code is $code. " >&2
@@ -219,7 +219,7 @@ options:
     local username
     for username in "$@"; do
         {
-            ___gt_delete "/v5/orgs/${org##*/}/memberships/${username##*/}"
+            ___x_cmd_gh_delete "/v5/orgs/${org##*/}/memberships/${username##*/}"
             code=$?
             if [ $code -ne 0 ]; then
                 echo "Creating repo failure: $name. Code is $code. " >&2

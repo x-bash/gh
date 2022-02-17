@@ -61,10 +61,10 @@ options:
 '
     param:run
     if [ "$#" -eq 0 ]; then
-        ___gt_get_multi "/v5/user/enterprises" admin
+        ___x_cmd_gh_get_multi "/v5/user/enterprises" admin
         [ $? -eq 1 ] && return 1
     else
-        ___gt_get "/v5/enterprises/${1:?Provide enterprise}"
+        ___x_cmd_gh_get "/v5/enterprises/${1:?Provide enterprise}"
         [ $? -eq 1 ] && return 1
     fi
     return 0
@@ -81,7 +81,7 @@ options:
     --direct        "direct"        <>:bool="false"
 '
     param:run
-    ui table func ___gt_table "\"\$(O=$O ___gt_get_multi \"/v5/enterprises/${1:?Provide enterprise}/repos\" repo_type direct page per_page)\"" \
+    ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/enterprises/${1:?Provide enterprise}/repos\" repo_type direct page per_page)\"" \
         . id full_name ownerName=owner.name updatedTime="updated_at"
 }
 
@@ -123,7 +123,7 @@ options:
     param:run
 # TODO: | json_table remark role user.login
 
-    ___gt_get_multi "/v5/enterprises/${enterprise##*/}/members" role page per_page
+    ___x_cmd_gh_get_multi "/v5/enterprises/${enterprise##*/}/members" role page per_page
 }
 
 gt_enterprise_member_user() {
@@ -135,7 +135,7 @@ options:
 '
     param:run
 
-    ___gt_get_multi "/v5/enterprises/${enterprise}/members/${username}"  
+    ___x_cmd_gh_get_multi "/v5/enterprises/${enterprise}/members/${username}"  
 }
 
 
@@ -153,7 +153,7 @@ options:
 '
     param:run
 
-    # repo="$(___gt_param_normalize_repo "$repo")" || return 1
+    # repo="$(___x_cmd_gh_param_normalize_repo "$repo")" || return 1
 
     if [ -z "$1" ]; then
         gt_log error "At least one user’s spatial address or email is needed"
@@ -162,7 +162,7 @@ options:
 
     local username
     for username in "$@"; do
-        ___gt_post_json "/v5/enterprises/${enterprise}/members" \
+        ___x_cmd_gh_post_json "/v5/enterprises/${enterprise}/members" \
          role $mode="$username"  
     done
 }
@@ -184,7 +184,7 @@ options:
     local code
     for username in "$@"; do
         {
-            ___gt_delete "/v5/enterprises/${enterprise##*/}/members/${username##*/}"
+            ___x_cmd_gh_delete "/v5/enterprises/${enterprise##*/}/members/${username##*/}"
             code=$?
             if [ $code -ne 0 ]; then
                 gt_log error "Creating repo failure: $name. Code is $code. "
@@ -207,7 +207,7 @@ options:
 '
     param:run
     active=${active:-false}
-    ___gt_put_json "/v5/enterprises/${enterprise##*/}/members/${username##*/}" name role active  
+    ___x_cmd_gh_put_json "/v5/enterprises/${enterprise##*/}/members/${username##*/}" name role active  
 }
 
 # EndSection

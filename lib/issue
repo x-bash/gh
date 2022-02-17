@@ -45,7 +45,7 @@ options:
 '
     security=${security:-false}
     param:run
-    ___gt_post_json "/v5/repos/${owner##*/}/issues" repo title issue_type=$type body assignee \
+    ___x_cmd_gh_post_json "/v5/repos/${owner##*/}/issues" repo title issue_type=$type body assignee \
         collaborators milestone labels program security_hole=$security  
 }
 
@@ -68,7 +68,7 @@ options:
 '
     param:run
     security=${security:-false}
-    ___gt_patch_json "/v5/repos/${owner##*/}/issues/${number}" repo title state body assignee \
+    ___x_cmd_gh_patch_json "/v5/repos/${owner##*/}/issues/${number}" repo title state body assignee \
         collaborators milestone labels program security_hole=$security  
 }
 
@@ -82,7 +82,7 @@ options:
     --sort          "sort(asc、desc)"       <>="desc"
 '
     param:run
-    ___gt_get "/v5/repos/${owner##*/}/issues/${number}/operate_logs" repo sort  
+    ___x_cmd_gh_get "/v5/repos/${owner##*/}/issues/${number}/operate_logs" repo sort  
 }
 
 
@@ -111,10 +111,10 @@ options:
     param:run
     gt_param_init_owner_repo
     if [ -z $number ]; then
-        ___gt_get_multi "/v5/repos/${owner_repo}/issues" state labels sort direction \
+        ___x_cmd_gh_get_multi "/v5/repos/${owner_repo}/issues" state labels sort direction \
             milestone assignee creator program  
     else
-        ___gt_get "/v5/repos/${owner_repo}/issues/${number}"  
+        ___x_cmd_gh_get "/v5/repos/${owner_repo}/issues/${number}"  
     fi
     return
 }
@@ -131,7 +131,7 @@ options:
     --org           "organization path"                            <>
 '
     param:run
-    ___gt_get "/v5/orgs/${org##*/}/issues" filter state labels sort direction since page per_page \
+    ___x_cmd_gh_get "/v5/orgs/${org##*/}/issues" filter state labels sort direction since page per_page \
         schedule deadline created_at finished_at  
 }
 
@@ -151,7 +151,7 @@ options:
     --program       "program"                                      <>=""
 '
     param:run
-    ___gt_get "/v5/enterprises/${enterprise##*/}/issues" \
+    ___x_cmd_gh_get "/v5/enterprises/${enterprise##*/}/issues" \
         filter state labels sort direction since page per_page \
         schedule deadline created_at finished_at milestone assignee creator program      
 }
@@ -188,7 +188,7 @@ options:
     --order         "order(asc、desc)"      <>="asc"
 '
     param:run
-    ___gt_get_multi "/v5/repos/${owner##*/}/${repo##*/}/issues/$number/comments"  since page per_page order  
+    ___x_cmd_gh_get_multi "/v5/repos/${owner##*/}/${repo##*/}/issues/$number/comments"  since page per_page order  
 }
 
 gt_issue_comment_create(){
@@ -201,7 +201,7 @@ options:
     --body          "The contents of the comment."      <>
 '
     param:run
-    ___gt_post_json "/v5/repos/${owner##*/}/${repo##*/}/issues/$number/comments"  body  
+    ___x_cmd_gh_post_json "/v5/repos/${owner##*/}/${repo##*/}/issues/$number/comments"  body  
 }
 
 gt_issue_comment_update(){
@@ -214,7 +214,7 @@ options:
     --body          "The contents of the comment."      <>
 '
     param:run
-    ___gt_patch_json "/v5/repos/${owner##*/}/${repo##*/}/issues/comments/${id}"  body  
+    ___x_cmd_gh_patch_json "/v5/repos/${owner##*/}/${repo##*/}/issues/comments/${id}"  body  
 }
 
 gt_issue_comment_delete(){
@@ -226,7 +226,7 @@ options:
     --id            "comments id"                       <>
 '
     param:run
-    ___gt_delete "/v5/repos/${owner##*/}/${repo##*/}/issues/comments/${id}"  
+    ___x_cmd_gh_delete "/v5/repos/${owner##*/}/${repo##*/}/issues/comments/${id}"  
 }
 
 # EndSection

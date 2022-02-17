@@ -49,7 +49,7 @@ gt_current_owner() {
     owner="$(param_default get "gitee_$O" owner)"
     [ -n "$owner" ] && echo "$owner" && return
 
-    data=$(___gt_get "/v5/user")
+    data=$(___x_cmd_gh_get "/v5/user")
     [ -n "$data" ] && owner=$(json_query data.login) && param_default put "gitee_$O" owner "$owner"
     echo "$owner"
 }
@@ -73,7 +73,7 @@ gt_current_owner_type() {
             return 1
         fi
 
-        data=$(___gt_owner_type_query "$owner")
+        data=$(___x_cmd_gh_owner_type_query "$owner")
         [ -z "$data" ] && return 1
 
         param_default put "gitee_$O" owner_type "$data"
@@ -81,7 +81,7 @@ gt_current_owner_type() {
     printf "%s" "$data" 
 }
 
-___gt_owner_type_query() {
+___x_cmd_gh_owner_type_query() {
     param:void
     local owner="${1:?Provide owner name}"
     for types in "org" "enterprise" "user"

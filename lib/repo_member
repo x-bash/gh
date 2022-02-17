@@ -32,7 +32,7 @@ options:
 '
     param:run
     gt_param_init_owner_repo
-    ui table func ___gt_table "\"\$(O=$O ___gt_get_multi \"/v5/repos/${owner_repo}/collaborators\" page per_page)\"" \
+    ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/repos/${owner_repo}/collaborators\" page per_page)\"" \
         . id login name push=permissions.push admin=permissions.admin
 }
 
@@ -54,7 +54,7 @@ options:
     local username
     for username in "$@"; do
         {
-            ___gt_put_json "/v5/repos/$owner_repo/collaborators/${username##*/}" permission 1>/dev/null
+            ___x_cmd_gh_put_json "/v5/repos/$owner_repo/collaborators/${username##*/}" permission 1>/dev/null
             local code=$?
             if [ $code -ne 0 ]; then
                 gt_log error "add user failure: $username. Code is $code. "
@@ -79,7 +79,7 @@ options:
     gt_param_init_owner_repo
     local username
     for username in "$@"; do
-        ___gt_delete "/v5/repos/$owner_repo/collaborators/${username##*/}"
+        ___x_cmd_gh_delete "/v5/repos/$owner_repo/collaborators/${username##*/}"
         if [ $? -ne 0 ];then
             gt_log error "delete user failure: $username."
         else
