@@ -48,7 +48,7 @@ ___x_cmd_gh_repo_create() {
 type:
     access  =   private public
 option:
-    --access                "private,public"                <>:access=private
+    --access                "private,public"                <>:RepoVisibility=private
     --description           "description"                   <>=""
     --homepage              "homepage"                      <>=""
     --no_issues             "Provide issue"
@@ -111,7 +111,7 @@ type:
 option:
     --org                   "organization create repo"      <>:name
     --description           "description"                   <>=""
-    --access                "private,public,innerSource"    <>:access=private
+    --access                "private,public,innerSource"    <>:RepoVisibility=private
     --homepage              "homepage"                      <>:URL=""
     --no_issues             "Provide issue"
     --no_wiki               "Provide wiki"
@@ -165,10 +165,10 @@ ___x_cmd_gh_enterprise_repo_create() {
     param:scope     "gitee/$O"
     param:dsl       '
 type:
-    access  =   private public innerSource
+    access  =               private public innerSource
 option:
     --enterprise            "enterprise space address"          <>
-    --access                "private,public,innerSource"        <>:access=private
+    --access                "private,public,innerSource"        <>:RepoVisibility=private
     --description           "description"                       <>=""
     --homepage              "homepage"                          <>:URL=""
     --paths                 "repo path"                         <>:URL=""
