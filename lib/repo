@@ -56,7 +56,7 @@ option:
     --no_comment            "Provide can_comment"
     --no_auto_init          "auto init README"
     --gitignore_template    "Git Ignore"                    <>:Ignore=" "
-    --license_template      "license"                       <>:license=" "
+    --license_template      "license"                       <>:License=" "
     --paths                 "repo path"                     <>:URL=""
     #n                      "repo names"
 '
@@ -118,7 +118,7 @@ option:
     --no_comment            "Provide can_comment"
     --no_auto_init          "auto init README"
     --gitignore_template    "Git Ignore"                    <>:Ignore=""
-    --license_template      "license"                       <>:license=""
+    --license_template      "license"                       <>:License=""
     --paths                  "repo path"                    <>:URL=""
     #n                      "repo names"
 '
@@ -178,7 +178,7 @@ option:
     --no_auto_init          "auto init README"
     --outsourced            "Provide outsourced"
     --gitignore_template    "Git Ignore"                        <>:Ignore=""
-    --license_template      "license"                           <>:license=""
+    --license_template      "license"                           <>:License=""
     --project_creator       "Provide project_creator"           <>:name=""
     --members               "Provide members(name or email)"    <>=""
 '
