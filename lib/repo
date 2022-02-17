@@ -57,7 +57,7 @@ option:
     --no_auto_init          "auto init README"
     --gitignore_template    "Git Ignore"                    <>:Ignore=" "
     --license_template      "license"                       <>:license=" "
-    --paths                 "repo path"                     <>:url_type=""
+    --paths                 "repo path"                     <>:URL=""
     #n                      "repo names"
 '
 
@@ -112,14 +112,14 @@ option:
     --org                   "organization create repo"      <>:name
     --description           "description"                   <>=""
     --access                "private,public,innerSource"    <>:access=private
-    --homepage              "homepage"                      <>:url_type=""
+    --homepage              "homepage"                      <>:URL=""
     --no_issues             "Provide issue"
     --no_wiki               "Provide wiki"
     --no_comment            "Provide can_comment"
     --no_auto_init          "auto init README"
     --gitignore_template    "Git Ignore"                    <>:Ignore=""
     --license_template      "license"                       <>:license=""
-    --paths                  "repo path"                    <>:url_type=""
+    --paths                  "repo path"                    <>:URL=""
     #n                      "repo names"
 '
     param:run
@@ -170,8 +170,8 @@ option:
     --enterprise            "enterprise space address"          <>
     --access                "private,public,innerSource"        <>:access=private
     --description           "description"                       <>=""
-    --homepage              "homepage"                          <>:url_type=""
-    --paths                 "repo path"                         <>:url_type=""
+    --homepage              "homepage"                          <>:URL=""
+    --paths                 "repo path"                         <>:URL=""
     --no_issues             "Provide issue"
     --no_wiki               "Provide wiki"
     --no_comment            "Provide can_comment"
