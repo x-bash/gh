@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-gt_user(){
+___x_cmd_gh_user(){
     param:scope     "gitee/$O"
     param:dsl       '
 subcommands:
@@ -20,10 +20,10 @@ subcommands:
     # list issues of user
     # list projects of user
 
-    "gt_user_${PARAM_SUBCMD}" "$@"
+    "___x_cmd_gh_user_${PARAM_SUBCMD}" "$@"
 }
 
-# gt_users() {
+# ___x_cmd_gh_users() {
 #     local O="${O:-GITEE_DEFAULT}"
 #     param <<A
 # scope:  gitee/$O
@@ -33,7 +33,7 @@ subcommands:
 #     ___x_cmd_gh_get "/v5/users/$name" | json_extract "html_url"
 # }
 
-gt_user_info() {
+___x_cmd_gh_user_info() {
     param:scope     "gitee/$O"
     param:dsl       '
 options:
@@ -56,8 +56,8 @@ A
 }
 
 # https://gitee.com/api/v5/swagger#/getV5UserRepos
-# gt_user_repo_list() {
-gt_user_repo() {
+# ___x_cmd_gh_user_repo_list() {
+___x_cmd_gh_user_repo() {
     param:scope     "gitee/$O"
     param:dsl       '
 type: 
@@ -81,7 +81,7 @@ options:
 }
 
 # https://gitee.com/api/v5/swagger#/getV5Emails
-gt_user_email(){
+___x_cmd_gh_user_email(){
     param:void
     [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/emails\")\"" \
         . email state && return
@@ -89,7 +89,7 @@ gt_user_email(){
     ___x_cmd_gh_get_multi "/v5/emails"
 }
 
-gt_user_issue(){
+___x_cmd_gh_user_issue(){
     param:scope     "gitee/$O"
     param:dsl       '
 type: 
@@ -118,7 +118,7 @@ options:
 
 # generate a key by openssl, then save it in the x-cmd cloud.
 
-gt_user_key(){
+___x_cmd_gh_user_key(){
     param:scope     "gitee/$O"
     param:dsl       '
 subcommands:
@@ -130,17 +130,17 @@ subcommands:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        gt_log error "Command Not Found. Show help."
+        ___x_cmd_gh_log error "Command Not Found. Show help."
         return 0
     fi
 
     # list issues of user
     # list projects of user
 
-    "gt_user_key_${PARAM_SUBCMD}" "$@"
+    "___x_cmd_gh_user_key_${PARAM_SUBCMD}" "$@"
 }
 
-gt_user_key_ls(){
+___x_cmd_gh_user_key_ls(){
     param:scope     "gitee/$O"
     param:dsl       '
 options:
@@ -151,7 +151,7 @@ options:
     ___x_cmd_gh_get "v5/user/keys" page per_page
 }
 
-gt_user_key_get(){
+___x_cmd_gh_user_key_get(){
     param:scope     "gitee/$O"
     param:dsl       '
 options:
@@ -161,7 +161,7 @@ options:
     ___x_cmd_gh_get "v5/user/keys/$id"
 }
 
-gt_user_key_del(){
+___x_cmd_gh_user_key_del(){
     param:scope     "gitee/$O"
     param:dsl       '
 options:
@@ -171,7 +171,7 @@ options:
     ___x_cmd_gh_delete "/v5/user/keys/$id"
 }
 
-gt_user_key_add(){
+___x_cmd_gh_user_key_add(){
     param:scope     "gitee/$O"
     param:dsl       '
 options:
@@ -182,7 +182,7 @@ options:
     ___x_cmd_gh_post_json "/v5/user/keys" key title
 }
 # TODO
-# gt_user_key(){
+# ___x_cmd_gh_user_key(){
 #     param <<A
 # scope:  gitee/$O
 # type: 

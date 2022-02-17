@@ -4,7 +4,7 @@
 # Synchronized token in the x-bash user profile.
 
 # shellcheck disable=SC2120
-gt_token() {
+___x_cmd_gh_token() {
     param:void
     local O="${O:-GITEE_DEFAULT}"
     if [ $# -eq 0 ]; then
@@ -15,7 +15,7 @@ gt_token() {
             param_default put "gitee_$O" "token" "$@"
           else
             param_default put "gitee_$O" "token" "$@"
-            gt_config_save
+            ___x_cmd_gh_config_save
         fi
     fi
 

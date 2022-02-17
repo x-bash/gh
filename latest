@@ -68,17 +68,17 @@ ____x_cmd_gh_make() {
     local O="_x_cmd_x_bash_gitee_$O_ORIGINAL"
     http "@$O" make  'https://gitee.com/api'
     http "@$O_ORIGINAL" header type "application/json;charset=utf-8"
-    O=$O_ORIGINAL gt_config_load >/dev/null
-    if [ $? -eq 0 ] && [ -n "$(O="$O_ORIGINAL" gt_token)" ]; then
-        O="$O_ORIGINAL" gt_current_owner
+    O=$O_ORIGINAL ___x_cmd_gh_config_load >/dev/null
+    if [ $? -eq 0 ] && [ -n "$(O="$O_ORIGINAL" ___x_cmd_gh_token)" ]; then
+        O="$O_ORIGINAL" ___x_cmd_gh_current_owner
     else
-        gt_log info "token is null"
+        ___x_cmd_gh_log info "token is null"
     fi
     # local TOKEN=${2:-""}
     # if [ -n "$GITEE_TOKEN" ]; then
     #     printf "Init token with env GITEE_TOKEN\n" >&2
-    #     O=$O_ORIGINAL gt_token.set "$GITEE_TOKEN"
-    # else    #     gt_config_load default
+    #     O=$O_ORIGINAL ___x_cmd_gh_token.set "$GITEE_TOKEN"
+    # else    #     ___x_cmd_gh_config_load default
     # fi
 }
 
