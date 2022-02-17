@@ -9,7 +9,7 @@
 # gt repo issue +el:admin -user-a +user-b
 ___x_cmd_gh_issue(){
     param:dsl       '
-subcommands:
+subcmd:
     create          "create issue"
     update          "update issue"
     info            "get issue info"
@@ -161,7 +161,7 @@ options:
 ___x_cmd_gh_issue_comment(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     ls              "list all comment"
     create          "create a comment"
     update          "update a comment"

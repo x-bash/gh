@@ -4,7 +4,7 @@
 
 ___x_cmd_gh_repo_pr(){
     param:dsl       '
-subcommands:
+subcmd:
     ls              "list pull requests"
     info            "pull request info"
     log             "pull requests log"

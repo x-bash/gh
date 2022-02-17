@@ -3,7 +3,7 @@
 
 ___x_cmd_gh_config(){
     param:dsl       '
-subcommands:
+subcmd:
     which       "Show current config path"
     save        "Save the config in memory into file"
     load        "Load the config from config path"

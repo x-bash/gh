@@ -4,7 +4,7 @@
 ___x_cmd_gh_repo(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     new             "new repo client"
     create          "create repo"
     ls              "list repo of owner"

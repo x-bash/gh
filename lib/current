@@ -3,7 +3,7 @@
 
 ___x_cmd_gh_current(){
     param:dsl       '
-subcommands:
+subcmd:
     repo        "Save the config in memory into file"
     owner       "get current owner"
     type        "get current owner type"

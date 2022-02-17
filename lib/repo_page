@@ -7,7 +7,7 @@
 
 ___x_cmd_gh_repo_page(){
     param:dsl       '
-subcommands:
+subcmd:
     info        "Show information of page"
     build       "Build page"
 '

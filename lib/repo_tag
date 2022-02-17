@@ -3,7 +3,7 @@
 
 ___x_cmd_gh_repo_tag(){
     param:dsl    '
-subcommands:
+subcmd:
     ls            "list tag"
     add             "add tag"
 '

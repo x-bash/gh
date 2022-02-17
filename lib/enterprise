@@ -4,7 +4,7 @@
 ___x_cmd_gh_enterprise(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     new             "alias enterprise name"
     info            "Show information"
     repo            "List all repos"
@@ -40,7 +40,7 @@ ___x_cmd_gh_enterprise_new() {
 
 ___x_cmd_gh_enterprise_repo(){
     param:dsl       '
-subcommands:
+subcmd:
     ls          "list repo"
     create      "enterprise repo create"
 '
@@ -94,7 +94,7 @@ options:
 # gt repo member +el:admin -user-a +user-b
 ___x_cmd_gh_enterprise_member(){
     param:dsl       '
-subcommands:
+subcmd:
     ls              "list member"
     user            "get member user info"
     add             "add member"

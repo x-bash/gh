@@ -4,7 +4,7 @@
 ___x_cmd_gh_org(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     new                     "new organization client"
     info                    "Show information"
     create                  "create org"
@@ -73,7 +73,7 @@ options:
 
 ___x_cmd_gh_org_repo(){
     param:dsl       '
-subcommands:
+subcmd:
     ls          "list repo"
     create      "org repo create"
 '
@@ -133,7 +133,7 @@ options:
 # gt repo member +el:admin -user-a +user-b
 ___x_cmd_gh_org_member(){
     param:dsl       '
-subcommands:
+subcmd:
     ls            "list member"
     user            "get org member user info"
     add             "add member"

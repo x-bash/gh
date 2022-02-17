@@ -4,7 +4,7 @@
 ___x_cmd_gh_user(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     info        "Show information"
     repo        "List all repos"
     email       "get user email"
@@ -121,7 +121,7 @@ options:
 ___x_cmd_gh_user_key(){
     param:scope     "gitee/$O"
     param:dsl       '
-subcommands:
+subcmd:
     ls        "Show information"
     add         "List all repos"
     get         "get one key"
