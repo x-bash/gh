@@ -55,6 +55,7 @@ option:
     --no_wiki               "Provide wiki"
     --no_comment            "Provide can_comment"
     --no_auto_init          "auto init README"
+    --sw                    "Optional facility"             <>=""   =,  wiki    -wiki   comment  -comment   issue -issue
     --gitignore_template    "Git Ignore"                    <>:Ignore=" "
     --license_template      "license"                       <>:License=" "
     --paths                 "repo path"                     <>:URL=""

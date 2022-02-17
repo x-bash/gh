@@ -19,6 +19,7 @@ param_type      github     Ignore            =   <<A
 $(xrc cat gh/lib/_type/ignore)
 A
 
+param_type      github     License           =
 param_type      github     License           =   <<A
 $(xrc cat gh/lib/_type/license)
 A
