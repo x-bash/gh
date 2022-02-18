@@ -15,7 +15,7 @@ ___x_cmd_gh_xrc(){
 }
 
 ___x_cmd_gh_xrc utils config current enterprise issue org  \
-        repo issue repo_member repo_page repo_pr repo_release repo_tag   \
+        repo/main issue  \
         repo_utils token user
 
  

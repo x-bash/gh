@@ -1,6 +1,8 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
+___x_cmd_gh_xrc repo/member repo/page repo/pr repo/release repo/tag
+
 ___x_cmd_gh_repo(){
     param:scope     "gitee/$O"
     param:dsl       '
