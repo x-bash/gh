@@ -27,7 +27,6 @@ subcommand:
     repo                                    "repo command"
     issue                                   "issue"
     pr                                      "pull request"
-    member                                  "repo member"
     current                                 "set current owner, repo"
     release                                 "release management"
     enterprise                              "manage enterprise"
