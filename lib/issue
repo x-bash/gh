@@ -7,6 +7,8 @@
 # gt repo issue add user-b
 
 # gt repo issue +el:admin -user-a +user-b
+
+# https://docs.github.com/cn/rest/reference/issues
 ___x_cmd_gh_issue(){
     param:dsl       '
 subcmd:
