@@ -39,12 +39,12 @@ ___x_cmd_gh_current_owner() {
     param:void
     local O="${O:-GITHUB_DEFAULT}"
     if [ -n "$1" ]; then
-        param_default put "github_$O" owner "$1"
-        param_default remove "github_$O" "owner_type"
-        param_default dump "github_$O"
-        # ___x_cmd_gh_current_owner_type || echo "Fetch owner type wrong. Please manually set owner-type using '___x_cmd_gh_current_owner_type <owner_type>'." >&2
+        param_default put     "github_$O" "owner" "$1"
+        param_default remove  "github_$O" "owner_type"
+        param_default dump    "github_$O"
         return 0
     fi
+    
     local owner
     owner="$(param_default get "github_$O" owner)"
     [ -n "$owner" ] && echo "$owner" && return

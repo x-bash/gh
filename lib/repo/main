@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-___x_cmd_gh_xrc repo/member repo/page repo/pr repo/release repo/tag
+# ___x_cmd_gh_xrc repo/member repo/page repo/pr repo/release repo/tag
 
 ___x_cmd_gh_repo(){
     param:scope     "github/$O"
@@ -25,20 +25,6 @@ subcmd:
     fi
     
     "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@" 
-}
-
-____x_cmd_gh_repo()(
-    ___x_cmd_gh_current_repo "${1:-repo}"
-    shift
-    ___x_cmd_gh_repo ${1:+"$@"}
-)
-
-___x_cmd_gh_repo_new() {
-    param:void
-    local reponame="${1:?Provide object name}"
-    local aliasname="${2:-$reponame}"
-    # shellcheck disable=SC2139
-    alias "$aliasname=\"O=$O ____x_cmd_gh_repo $reponame\""
 }
 
 # arguments NAME

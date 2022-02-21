@@ -14,12 +14,12 @@ ___x_cmd_gh_xrc(){
     done
 }
 
-___x_cmd_gh_xrc  config token
+___x_cmd_gh_xrc  config token repo/main
 
  
 x log init gh
 
-___x_cmd_gh(){
+gh(){
     param:dsl       '
 subcommand:
     repo                                    "repo command"
