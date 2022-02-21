@@ -2,7 +2,7 @@
 # shellcheck disable=SC2039,3043
 
 ___x_cmd_gh_enterprise(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     new             "alias enterprise name"
@@ -46,14 +46,14 @@ subcmd:
 '
     param:run
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
     "___x_cmd_gh_enterprise_repo_${PARAM_SUBCMD}" "$@"
 }
 
 ___x_cmd_gh_enterprise_info() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 
 options:
@@ -70,9 +70,9 @@ options:
     return 0
 }
 
-# https://gitee.com/api/v5/swagger#/getV5EnterprisesEnterpriseRepos
+# https://github.com/api/v5/swagger#/getV5EnterprisesEnterpriseRepos
 ___x_cmd_gh_enterprise_repo_ls() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     genre = all public internal private
@@ -87,11 +87,11 @@ options:
 
 # Section : member
 # Should be like this.
-# gt repo member add el:admin
-# gt repo member remove user-a
-# gt repo member add user-b
+# gh repo member add el:admin
+# gh repo member remove user-a
+# gh repo member add user-b
 
-# gt repo member +el:admin -user-a +user-b
+# gh repo member +el:admin -user-a +user-b
 ___x_cmd_gh_enterprise_member(){
     param:dsl       '
 subcmd:
@@ -104,7 +104,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "subcommand not found. show help."
+        gh_log error "subcommand not found. show help."
         return 0
     fi
     
@@ -112,7 +112,7 @@ subcmd:
 }
 
 ___x_cmd_gh_enterprise_member_ls() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     role = all member admin
@@ -127,7 +127,7 @@ options:
 }
 
 ___x_cmd_gh_enterprise_member_user() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--enterprise    "enterprise space address"  <>:address
@@ -140,7 +140,7 @@ options:
 
 
 ___x_cmd_gh_enterprise_member_add() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     role =  member  outsourced admin
@@ -156,7 +156,7 @@ options:
     # repo="$(___x_cmd_gh_param_normalize_repo "$repo")" || return 1
 
     if [ -z "$1" ]; then
-        ___x_cmd_gh_log error "At least one user’s spatial address or email is needed"
+        gh_log error "At least one user’s spatial address or email is needed"
         return 1
     fi
 
@@ -168,7 +168,7 @@ options:
 }
 
 ___x_cmd_gh_enterprise_member_del() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --enterprise|-e    "enterprise space address"      <>:address
@@ -187,7 +187,7 @@ options:
             ___x_cmd_gh_delete "/v5/enterprises/${enterprise##*/}/members/${username##*/}"
             code=$?
             if [ $code -ne 0 ]; then
-                ___x_cmd_gh_log error "Creating repo failure: $name. Code is $code. "
+                gh_log error "Creating repo failure: $name. Code is $code. "
                 return $code
             fi
         }  
@@ -196,7 +196,7 @@ options:
 
 
 ___x_cmd_gh_enterprise_member_access() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --enterprise|-e     "Repo owner path"                   <>:address

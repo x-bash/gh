@@ -4,7 +4,7 @@
 # https://docs.github.com/cn/rest/reference/users
 
 ___x_cmd_gh_user(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     info        "Show information"
@@ -26,9 +26,9 @@ subcmd:
 }
 
 # ___x_cmd_gh_users() {
-#     local O="${O:-GITEE_DEFAULT}"
+#     local O="${O:-GITHUB_DEFAULT}"
 #     param <<A
-# scope:  gitee/$O
+# scope:  github/$O
 # options: 
 #     #1          "Provide owner"
 # A
@@ -36,7 +36,7 @@ subcmd:
 # }
 
 ___x_cmd_gh_user_info() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1              "Username, if not set, show the user information of current owner, or owner of this token" 
@@ -57,10 +57,10 @@ A
     [ -n "$name" ] && ui tf "true" "success" "- name:$name" "- url:$html_url" "- type:$types"
 }
 
-# https://gitee.com/api/v5/swagger#/getV5UserRepos
+# https://github.com/api/v5/swagger#/getV5UserRepos
 # ___x_cmd_gh_user_repo_list() {
 ___x_cmd_gh_user_repo() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type: 
     authority = all public private
@@ -82,7 +82,7 @@ options:
     fi
 }
 
-# https://gitee.com/api/v5/swagger#/getV5Emails
+# https://github.com/api/v5/swagger#/getV5Emails
 ___x_cmd_gh_user_email(){
     param:void
     [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/emails\")\"" \
@@ -92,7 +92,7 @@ ___x_cmd_gh_user_email(){
 }
 
 ___x_cmd_gh_user_issue(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type: 
     screen = all assigned created
@@ -121,7 +121,7 @@ options:
 # generate a key by openssl, then save it in the x-cmd cloud.
 
 ___x_cmd_gh_user_key(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     ls        "Show information"
@@ -132,7 +132,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
 
@@ -143,7 +143,7 @@ subcmd:
 }
 
 ___x_cmd_gh_user_key_ls(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --page        "page"                    <>:number=1
@@ -154,7 +154,7 @@ options:
 }
 
 ___x_cmd_gh_user_key_get(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --id        "provided key id"       <>:number
@@ -164,7 +164,7 @@ options:
 }
 
 ___x_cmd_gh_user_key_del(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --id        "provided key id"           <>:number
@@ -174,7 +174,7 @@ options:
 }
 
 ___x_cmd_gh_user_key_add(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --key       "add key"                   <>
@@ -186,7 +186,7 @@ options:
 # TODO
 # ___x_cmd_gh_user_key(){
 #     param <<A
-# scope:  gitee/$O
+# scope:  github/$O
 # type: 
 #     operate = add get delete 
 # options:

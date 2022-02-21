@@ -24,30 +24,30 @@ subcmd:
 # Section: try
 ___x_cmd_gh_config_which() {
     param:void
-    local O="${O:-GITEE_DEFAULT}"
-    echo "$HOME/.x-cmd/.config/x-bash/app.gitee.config/$O"
+    local O="${O:-GITHUB_DEFAULT}"
+    echo "$HOME/.x-cmd/.config/x-bash/app.github.config/$O"
 }
 
 # TODO:config 
 ___x_cmd_gh_config_save() {
     param:void
-    local O="${O:-GITEE_DEFAULT}"
-    local ___gitee_path="${1:-$HOME/.x-cmd/.config/x-bash/app.gitee.config/$O}"
-    [ ! -e "$___gitee_path" ] && mkdir -p "$___gitee_path##*/"
-    param_default dump "gitee_$O">"$___gitee_path" && ui tf "true" "Config $O saved in path: $___gitee_path" && return
-    ___x_cmd_gh_log error "gt config save Fail"
+    local O="${O:-GITHUB_DEFAULT}"
+    local ___github_path="${1:-$HOME/.x-cmd/.config/x-bash/app.github.config/$O}"
+    [ ! -e "$___github_path" ] && mkdir -p "$___github_path##*/"
+    param_default dump "github_$O">"$___github_path" && ui tf "true" "Config $O saved in path: $___github_path" && return
+    gh_log error "gh config save Fail"
 }
 
 # shellcheck disable=SC2120
 ___x_cmd_gh_config_load() {
     param:void
-    local O="${O:-GITEE_DEFAULT}"
-    local ___gitee_path="${1:-$HOME/.x-cmd/.config/x-bash/app.gitee.config/$O}"
-    [ ! -f "$___gitee_path" ] && ___x_cmd_gh_log error "ERROR:There is no history config" && return
-    param_default load "gitee_$O" "$___gitee_path"
-    param_default dump "gitee_$O"
-    token="$(param_default get "gitee_$O" token)"
-    ___x_cmd_gh_token "false" "$token" && ui tf "true" "Config $O load from path: $___gitee_path" >&2
+    local O="${O:-GITHUB_DEFAULT}"
+    local ___github_path="${1:-$HOME/.x-cmd/.config/x-bash/app.github.config/$O}"
+    [ ! -f "$___github_path" ] && gh_log info "info:There is no history config" && return
+    param_default load "github_$O" "$___github_path"
+    param_default dump "github_$O"
+    token="$(param_default get "github_$O" token)"
+    ___x_cmd_gh_token "false" "$token" && ui tf "true" "Config $O load from path: $___github_path" >&2
 }
 # EndSection
 

@@ -4,7 +4,7 @@
 ___x_cmd_gh_xrc repo/member repo/page repo/pr repo/release repo/tag
 
 ___x_cmd_gh_repo(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     new             "new repo client"
@@ -20,7 +20,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
     
@@ -43,9 +43,9 @@ ___x_cmd_gh_repo_new() {
 
 # arguments NAME
 ___x_cmd_gh_repo_create() {
-    local O="${O:-GITEE_DEFAULT}"
+    local O="${O:-GITHUB_DEFAULT}"
 
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     access  =   private public
@@ -81,7 +81,7 @@ option:
     [ -n "$no_comment" ] &&     can_comment=false
     [ -n "$no_auto_init" ] &&   auto_init=false
 
-    [ $# -eq 0 ] && ___x_cmd_gh_log info "repo create name is null" && return
+    [ $# -eq 0 ] && gh_log info "repo create name is null" && return
     local name
     for name in "$@"; do
         {
@@ -94,7 +94,7 @@ A
             if [ -n "$repo_id" ];then
                 ui tf "true" "Creating repo $name success" "repo_id:$repo_id" "url:$url" "repo_owner:$repo_owner" 
             else
-                ___x_cmd_gh_log error "Creating repo failure: $name. Code is $code. " 
+                gh_log error "Creating repo failure: $name. Code is $code. " 
             fi
         }
     done
@@ -103,11 +103,11 @@ A
 # ORGANIZATION NAME
 # shellcheck disable=SC2154,SC2034
 
-# https://gitee.com/api/v5/swagger#/postV5OrgsOrgRepos
+# https://github.com/api/v5/swagger#/postV5OrgsOrgRepos
 ___x_cmd_gh_org_repo_create() {
     # TODO: I don't know what does path means for an organization repo
     # path is null default repo name as path
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     access  =   private public innerSource
@@ -154,7 +154,7 @@ option:
              gitignore_template license_template path="$paths" public
             code=$?
             if [ $code -ne 0 ]; then
-                ___x_cmd_gh_log error "Creating repo failure: $name. Code is $code. "
+                gh_log error "Creating repo failure: $name. Code is $code. "
                 # ___x_cmd_gh_resp_header "" >&2
                 return $code
             fi
@@ -162,10 +162,10 @@ option:
     done
 }
 
-# https://gitee.com/api/v5/swagger#/postV5EnterprisesEnterpriseRepos
+# https://github.com/api/v5/swagger#/postV5EnterprisesEnterpriseRepos
 # shellcheck disable=SC2154
 ___x_cmd_gh_enterprise_repo_create() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     access  =               private public innerSource
@@ -212,7 +212,7 @@ option:
             gitignore_template license_template path="$paths" private enterprise outsourced project_creator members
             code=$?
             if [ $code -ne 0 ]; then
-                ___x_cmd_gh_log error "Creating repo failure: $name. Code is $code. "
+                gh_log error "Creating repo failure: $name. Code is $code. "
                 return $code
             fi
         } | json_color
@@ -225,8 +225,8 @@ option:
 # Section 5: List Repos TODO:
 ############################
 
-# gt repo list --access inner-source <owner>
-# gt enterprise repo list
+# gh repo list --access inner-source <owner>
+# gh enterprise repo list
 ___x_cmd_gh_repo_ls() {
     param:void
     local owner
@@ -244,7 +244,7 @@ ___x_cmd_gh_repo_ls() {
         return
     fi
 
-    ___x_cmd_gh_log error "Please provide owner and owner_type\n"
+    gh_log error "Please provide owner and owner_type\n"
     return 1
     # param_help.show
 }
@@ -253,7 +253,7 @@ ___x_cmd_gh_repo_ls() {
 # Section 7: Repo - Deletion & Info & Creation
 ############################
 ___x_cmd_gh_repo_info() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--repo          "Repo name"         <>:repo
@@ -265,9 +265,9 @@ options:
     # ___x_cmd_gh_get "/v5/repos/${owner}/${repo}"
 }
 
-# https://gitee.com/api/v5/swagger#/deleteV5ReposOwnerRepo
+# https://github.com/api/v5/swagger#/deleteV5ReposOwnerRepo
 ___x_cmd_gh_repo_del() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #n      "Provide repo list"    <>
@@ -283,13 +283,13 @@ options:
         if [ $? -eq 0 ]; then
             ui tf "true" "deleted repo $i"
         else
-            ___x_cmd_gh_log error "Code is $?. Deleting repo failure: $i. Probably because it desn't exists."
+            gh_log error "Code is $?. Deleting repo failure: $i. Probably because it desn't exists."
         fi
     done
 }
 
 ___x_cmd_gh_repo_clear() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--repo          "Repo name"             <>:repo
@@ -301,11 +301,11 @@ options:
     confirm=$(ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
     [ "$confirm" = "no" ] && return
     ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
-    ___x_cmd_gh_log error "clear repo failure: $owner_repo"
+    gh_log error "clear repo failure: $owner_repo"
 }
 
 ___x_cmd_gh_repo_review(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--repo             "Repo name"                   <>:repo

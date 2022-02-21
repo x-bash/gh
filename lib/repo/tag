@@ -10,7 +10,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "subcommand not found. show help."
+        gh_log error "subcommand not found. show help."
         return 0
     fi
     
@@ -18,7 +18,7 @@ subcmd:
 }
 
 ___x_cmd_gh_repo_tag_ls() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl    '
 options:
     #1|--repo          "Repo name"                 <>:repo
@@ -34,7 +34,7 @@ options:
 # #2: tag_name
 # #3: tag_message
 ___x_cmd_gh_repo_tag_add() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl    '
 options:
     --repo          "Repo name"                 <>:repo

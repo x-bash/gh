@@ -5,16 +5,16 @@
 # Section 2: Wrapping std/http module with object naming changing
 ############################
 ___x_cmd_gh_resp_header() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" resp header "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp header "$@"
 }
 
 # TODO: Not supported yet
 ___x_cmd_gh_resp_body() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" resp body "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp body "$@"
 }
 
 ___x_cmd_gh_get() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" get "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" get "$@"
 }
 
 ___x_cmd_gh_get_multi() {
@@ -33,30 +33,30 @@ ___x_cmd_gh_get_multi() {
     done
 }
 
-# ___x_cmd_gh_post(){ O="___x_cmd_gh_${O:-GITEE_DEFAULT}" http_post "$@"; }
+# ___x_cmd_gh_post(){ O="___x_cmd_gh_${O:-GITHUB_DEFAULT}" http_post "$@"; }
 ___x_cmd_gh_post_json() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" post  json "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" post  json "$@"
 }
 
-# ___x_cmd_gh_put(){ O="___x_cmd_gh_${O:-GITEE_DEFAULT}" http_put "$@"; }
+# ___x_cmd_gh_put(){ O="___x_cmd_gh_${O:-GITHUB_DEFAULT}" http_put "$@"; }
 ___x_cmd_gh_put_json() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" put json "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" put json "$@"
 }
 
 ___x_cmd_gh_patch_json() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" patch json "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" patch json "$@"
 }
 
 ___x_cmd_gh_delete() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" delete "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" delete "$@"
 }
 
 ___x_cmd_gh_dict_get() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" dict "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
 }
 
 ___x_cmd_gh_dict_put() {
-    http "@___x_cmd_gh_${O:-GITEE_DEFAULT}" dict "$@"
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
 }
 
 
@@ -107,7 +107,7 @@ ___x_cmd_gh_param_normalize_repo() {
 ### Repo #1
 
 ___x_cmd_gh_parse_owner_repo() {
-    local O="${O:-GITEE_DEFAULT}"
+    local O="${O:-GITHUB_DEFAULT}"
     if [ -z "$repo" ]; then
         repo="$(___x_cmd_gh_current_repo)"
     fi
@@ -121,9 +121,6 @@ ___x_cmd_gh_parse_owner_repo() {
     fi
 }
 
-___x_cmd_gh_cache(){
-    ccmd -- eval "$@"
-}
 
 ___x_cmd_gh_table() {
     local tmp

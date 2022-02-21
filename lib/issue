@@ -4,11 +4,11 @@
 # shellcheck disable=SC2039,3043
 
 # Should be like this.
-# gt repo issue add el:admin
-# gt repo issue remove user-a
-# gt repo issue add user-b
+# gh repo issue add el:admin
+# gh repo issue remove user-a
+# gh repo issue add user-b
 
-# gt repo issue +el:admin -user-a +user-b
+# gh repo issue +el:admin -user-a +user-b
 
 # https://docs.github.com/cn/rest/reference/issues
 ___x_cmd_gh_issue(){
@@ -32,7 +32,7 @@ subcmd:
 
 
 ___x_cmd_gh_issue_create() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl      '
 options:
     --owner         "owner"                         <>
@@ -54,7 +54,7 @@ options:
 }
 
 ___x_cmd_gh_issue_update() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                         <>
@@ -77,7 +77,7 @@ options:
 }
 
 ___x_cmd_gh_issue_logs(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                 <>
@@ -96,7 +96,7 @@ options:
 
 # schedule、deadline、created_at、finished_at 用UI来处理
 ___x_cmd_gh_repo_issue() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     state = open progressing closed rejected all
@@ -124,7 +124,7 @@ options:
 }
 
 ___x_cmd_gh_org_issue(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --filter        "filter(assigned,created,all)"                 <>="assigned"
@@ -140,7 +140,7 @@ options:
 }
 
 ___x_cmd_gh_enterprise_issue(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --enterprise    "enterprise path"                              <>
@@ -163,7 +163,7 @@ options:
 # Section : comment
 
 ___x_cmd_gh_issue_comment(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     ls              "list all comment"
@@ -180,7 +180,7 @@ subcmd:
 }
 
 ___x_cmd_gh_issue_comment_ls(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                 <>
@@ -196,7 +196,7 @@ options:
 }
 
 ___x_cmd_gh_issue_comment_create(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                             <>
@@ -209,7 +209,7 @@ options:
 }
 
 ___x_cmd_gh_issue_comment_update(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                            <>
@@ -222,7 +222,7 @@ options:
 }
 
 ___x_cmd_gh_issue_comment_delete(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --owner         "owner"                            <>

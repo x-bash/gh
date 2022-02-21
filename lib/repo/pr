@@ -19,7 +19,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
     
@@ -31,7 +31,7 @@ subcmd:
 
 ___x_cmd_gh_repo_pr_ls() {
 
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     state = open merged closed all
@@ -70,7 +70,7 @@ alias ___parse_pr_init_owner_repo_and_pr='
 '
 
 ___x_cmd_gh_repo_pr_info() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"     <>:number
@@ -84,7 +84,7 @@ options:
 
 
 ___x_cmd_gh_repo_pr_log() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     state  = desc asc
@@ -99,7 +99,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_commit() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"                <>
@@ -111,7 +111,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_view() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"         <>:number
@@ -120,7 +120,7 @@ options:
 
     ___parse_pr_init_owner_repo_and_pr
 
-    http browse "https://gitee.com/${owner_repo}/pulls/$pr"
+    http browse "https://github.com/${owner_repo}/pulls/$pr"
 }
 
 # EndSection
@@ -128,8 +128,8 @@ options:
 # Section: create update merge
 
 ___x_cmd_gh_repo_pr_create() {
-    local O="${O:-GITEE_DEFAULT}"
-    param:scope     "gitee/$O"
+    local O="${O:-GITHUB_DEFAULT}"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     bool = true false
@@ -157,8 +157,8 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_update() {
-    local O="${O:-GITEE_DEFAULT}"
-    param:scope     "gitee/$O"
+    local O="${O:-GITHUB_DEFAULT}"
+    param:scope     "github/$O"
 ##TODO:state
     param:dsl       '
 type:
@@ -181,7 +181,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_merge() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type:
     merge = squash  merge
@@ -204,7 +204,7 @@ options:
 # Section : assign
 
 ___x_cmd_gh_repo_pr_assign(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcommand:
     add             "Add assignee"
@@ -222,7 +222,7 @@ subcommand:
 }
 
 ___x_cmd_gh_repo_pr_assign_add() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"                                                     <>:number
@@ -237,7 +237,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_assign_del() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"                                                     <>:number
@@ -250,7 +250,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_assign_reset() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr             "pr id"                 <>:number
@@ -265,7 +265,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_assign_review() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr         "pr id"                     <>:number
@@ -283,7 +283,7 @@ options:
 # Section : testers
 
 ___x_cmd_gh_repo_pr_testers(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcommand:
     add             "Add assignee"
@@ -300,9 +300,9 @@ subcommand:
     "___x_cmd_gh_repo_pr_assign_$PARAM_SUBCMD" "$@"
 }
 
-# https://gitee.com/api/v5/swagger#/postV5ReposOwnerRepoPullsNumberTesters
+# https://github.com/api/v5/swagger#/postV5ReposOwnerRepoPullsNumberTesters
 ___x_cmd_gh_repo_pr_testers_add() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr         "pr id"                     <>
@@ -315,7 +315,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_testers_delete() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr         "pr id"                     <>:number
@@ -328,7 +328,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_testers_reset() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr         "pr id"                     <>:number
@@ -342,7 +342,7 @@ options:
 }
 
 ___x_cmd_gh_repo_pr_testers_test() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--pr         "pr id"                     <>:number

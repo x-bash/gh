@@ -2,7 +2,7 @@
 # shellcheck disable=SC2039,3043
 
 ___x_cmd_gh_org(){
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 subcmd:
     new                     "new organization client"
@@ -16,7 +16,7 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
       
@@ -38,7 +38,7 @@ ___x_cmd_gh_org_new() {
 }
 
 ___x_cmd_gh_org_info() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type: 
 options:
@@ -59,7 +59,7 @@ options:
 
 # It is very rare TODO:batch?
 ___x_cmd_gh_org_create() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1              "organization name"     <>:name
@@ -79,15 +79,15 @@ subcmd:
 '
     param:run
     if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_log error "Command Not Found. Show help."
+        gh_log error "Command Not Found. Show help."
         return 0
     fi
     "___x_cmd_gh_org_repo_${PARAM_SUBCMD}" "$@"
 }
 
-# https://gitee.com/api/v5/swagger#/getV5OrgsOrgRepos
+# https://github.com/api/v5/swagger#/getV5OrgsOrgRepos
 ___x_cmd_gh_org_repo_ls() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --type     "type"     <>="all"    = all private public
@@ -98,7 +98,7 @@ options:
 }
 
 ___x_cmd_gh_org_quit() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #n      "orgs"
@@ -126,11 +126,11 @@ options:
 # shellcheck disable=SC2039,3043
 
 # Should be like this.
-# gt repo member add el:admin
-# gt repo member remove user-a
-# gt repo member add user-b
+# gh repo member add el:admin
+# gh repo member remove user-a
+# gh repo member add user-b
 
-# gt repo member +el:admin -user-a +user-b
+# gh repo member +el:admin -user-a +user-b
 ___x_cmd_gh_org_member(){
     param:dsl       '
 subcmd:
@@ -150,7 +150,7 @@ subcmd:
 }
 
 ___x_cmd_gh_org_member_ls() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     #1|--org        "org space address"    <>:address
@@ -161,7 +161,7 @@ options:
 }
 
 ___x_cmd_gh_org_member_user() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl      '
 options:
     #1|--org            "org space address"         <>:address
@@ -173,7 +173,7 @@ options:
 }
 
 ___x_cmd_gh_org_member_add() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 type: 
     role = admin member
@@ -203,7 +203,7 @@ options:
 }
 
 ___x_cmd_gh_org_member_del() {
-    param:scope     "gitee/$O"
+    param:scope     "github/$O"
     param:dsl       '
 options:
     --org       "org space address"         <>:address

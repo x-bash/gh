@@ -1,4 +1,4 @@
-# gitee：Gitee's Missing CLI
+# github：Gitee's Missing CLI
 
 ## 安装教程
 
@@ -7,7 +7,7 @@
 不需安装，可直接使用
 
 ```bash
-x gitee
+x github
 ```
 
 **未安装x-cmd**
@@ -16,11 +16,11 @@ x gitee
 
 ## 首次使用：配置Token
 
-本模块只需要配置gitee授权的令牌（token），就能使用
+本模块只需要配置github授权的令牌（token），就能使用
 
 ```bash
-> x gitee init
-Please input your token. You can get your token from https://gitee.com/profile/personal_access_tokens
+> x github init
+Please input your token. You can get your token from https://github.com/profile/personal_access_tokens
 <put put your token here>
 ```
 
