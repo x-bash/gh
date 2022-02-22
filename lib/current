@@ -44,12 +44,12 @@ ___x_cmd_gh_current_owner() {
         param_default dump    "github_$O"
         return 0
     fi
-    
+
     local owner
     owner="$(param_default get "github_$O" owner)"
     [ -n "$owner" ] && echo "$owner" && return
 
-    data=$(___x_cmd_gh_get "/v5/user")
+    data=$(___x_cmd_gh_get "/user")
     [ -n "$data" ] && owner=$(json_query data.login) && param_default put "github_$O" owner "$owner"
     echo "$owner"
 }

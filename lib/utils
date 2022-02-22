@@ -33,12 +33,10 @@ ___x_cmd_gh_get_multi() {
     done
 }
 
-# ___x_cmd_gh_post(){ O="___x_cmd_gh_${O:-GITHUB_DEFAULT}" http_post "$@"; }
 ___x_cmd_gh_post_json() {
     http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" post  json "$@"
 }
 
-# ___x_cmd_gh_put(){ O="___x_cmd_gh_${O:-GITHUB_DEFAULT}" http_put "$@"; }
 ___x_cmd_gh_put_json() {
     http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" put json "$@"
 }

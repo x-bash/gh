@@ -53,9 +53,9 @@ ___x_cmd_gh_config_load() {
 
 # Section: get list set
 
-___x_cmd_gh_get(){
-    :
-}
+# ___x_cmd_gh_get(){
+#     :
+# }
 
 ___x_cmd_gh_list(){
     :

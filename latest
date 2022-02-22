@@ -14,7 +14,7 @@ ___x_cmd_gh_xrc(){
     done
 }
 
-___x_cmd_gh_xrc  config token repo/main
+___x_cmd_gh_xrc  config token repo/main current utils
 
  
 x log init gh
@@ -55,10 +55,11 @@ subcommand:
 ____x_cmd_gh_make() {
     param:void
     local O_ORIGINAL=${1:?Provide client name by O environment}
+    local O="___x_cmd_gh_$O_ORIGINAL"
 
-    local O="_x_cmd_x_bash_github_$O_ORIGINAL"
-    http "@$O" make  'https://github.com/api'
+    http "@$O"          make  'https://api.github.com'
     http "@$O_ORIGINAL" header type "application/json;charset=utf-8"
+
     O=$O_ORIGINAL ___x_cmd_gh_config_load >/dev/null
     if [ $? -eq 0 ] && [ -n "$(O="$O_ORIGINAL" ___x_cmd_gh_token)" ]; then
         O="$O_ORIGINAL" ___x_cmd_gh_current_owner

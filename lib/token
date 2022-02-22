@@ -22,7 +22,6 @@ ___x_cmd_gh_token() {
     if [ -n "$1" ]; then
         # setter
         local token="$1"
-        http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" qs put access_token "$token"
-        http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" body put access_token "$token"
+        http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" header put Authorization "token $token"
     fi
 }
