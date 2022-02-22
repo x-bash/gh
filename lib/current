@@ -50,7 +50,7 @@ ___x_cmd_gh_current_owner() {
     [ -n "$owner" ] && echo "$owner" && return
 
     data=$(___x_cmd_gh_get "/user")
-    [ -n "$data" ] && owner=$(json_query data.login) && param_default put "github_$O" owner "$owner"
+    [ -n "$data" ] && owner=$(___x_cmd_gh_json_query "$data" ".login") && param_default put "github_$O" owner "$owner"
     echo "$owner"
 }
 

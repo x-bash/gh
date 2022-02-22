@@ -7,9 +7,9 @@ subcmd:
     which       "Show current config path"
     save        "Save the config in memory into file"
     load        "Load the config from config path"
-    get         "Print the value of a given configuration key"
-    list        "Print a list of configuration keys and values"
-    set         "Print the value of a given configuration key"
+    # get         "Print the value of a given configuration key"
+    # list        "Print a list of configuration keys and values"
+    # set         "Print the value of a given configuration key"
 '
     param:run
 

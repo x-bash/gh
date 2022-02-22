@@ -19,7 +19,7 @@ ___x_cmd_gh_xrc  config token repo/main current utils
  
 x log init gh
 
-gh(){
+___x_cmd_gh(){
     param:dsl       '
 subcommand:
     repo                                    "repo command"
@@ -72,5 +72,9 @@ if [ -z "$DO_NOT_INIT_GITHUB_DEFAULT" ]; then
     ____x_cmd_gh_make "GITHUB_DEFAULT" && DO_NOT_INIT_GITHUB_DEFAULT="true"
 fi
 
+if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
+    xrc advise/latest
+    advise gh
+fi
 xrc setmain ___x_cmd_gh
 
