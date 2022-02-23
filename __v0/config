@@ -7,6 +7,9 @@ subcmd:
     which       "Show current config path"
     save        "Save the config in memory into file"
     load        "Load the config from config path"
+    # get         "Print the value of a given configuration key"
+    # list        "Print a list of configuration keys and values"
+    # set         "Print the value of a given configuration key"
 '
     param:run
 
@@ -46,4 +49,20 @@ ___x_cmd_gh_config_load() {
     token="$(param_default get "github_$O" token)"
     ___x_cmd_gh_token "false" "$token" >&2
 }
+# EndSection
+
+# Section: get list set
+
+# ___x_cmd_gh_get(){
+#     :
+# }
+
+___x_cmd_gh_list(){
+    :
+}
+
+___x_cmd_gh_set(){
+    :
+}
+
 # EndSection

@@ -42,15 +42,16 @@ ___x_cmd_gh_org_info() {
     param:dsl       '
 type: 
 options:
-    --admin      "admin"       <>:bool=false
+    --admin      "admin"       <>:bool
 '
     param:run
 
+    admin=${admin:-false}
     if [ $# -eq 0 ]; then
-        ___x_cmd_gh_get_multi "/user/orgs" page per_page
+        ___x_cmd_gh_get_multi "/v5/user/orgs" admin page per_page
         [ $? -eq 1 ] && return 1
     else
-        ___x_cmd_gh_get "/orgs/${1:?Provide organization}"
+        ___x_cmd_gh_get "/v5/orgs/${1:?Provide organization}"
         [ $? -eq 1 ] && return 1
     fi
     return 0
@@ -67,7 +68,7 @@ options:
 '
     param:run
     org=${org:-$1}
-    ___x_cmd_gh_post_json "/users/organization" name="$1" org description  
+    ___x_cmd_gh_post_json "/v5/users/organization" name="$1" org description  
 }
 
 ___x_cmd_gh_org_repo(){

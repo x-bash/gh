@@ -230,7 +230,7 @@ ___x_cmd_gh_repo_ls() {
         return
     fi
 
-    gh_log error "Please provide owner and owner_type"
+    gh_log error "Please provide owner and owner_type\n"
     return 1
 }
 

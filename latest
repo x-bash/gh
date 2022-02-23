@@ -9,12 +9,12 @@ xrc http param json str ui
 ___x_cmd_gh_xrc(){
     local i
     for i in "$@"; do
-    # xrc "gh/lib/$i"
-    . "lib/$i"
+    xrc "gh/lib/$i"
+    # . "lib/$i"
     done
 }
 
-___x_cmd_gh_xrc  config token repo/main current utils
+___x_cmd_gh_xrc  config token repo/main current utils user/main org/org_main
 
  
 x log init gh
@@ -58,7 +58,7 @@ ____x_cmd_gh_make() {
     local O="___x_cmd_gh_$O_ORIGINAL"
 
     http "@$O"          make  'https://api.github.com'
-    http "@$O_ORIGINAL" header type "application/json;charset=utf-8"
+    http "@$O_ORIGINAL" header Accept "application/vnd.github.v3+json"
 
     O=$O_ORIGINAL ___x_cmd_gh_config_load >/dev/null
     if [ $? -eq 0 ] && [ -n "$(O="$O_ORIGINAL" ___x_cmd_gh_token)" ]; then
