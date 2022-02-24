@@ -27,7 +27,6 @@ subcommand:
     pr                                      "pull request"
     current                                 "set current owner, repo"
     release                                 "release management"
-    enterprise                              "manage enterprise"
     org                                     "manage org"
     tag                                     "repo tag"
     user                                    "user"

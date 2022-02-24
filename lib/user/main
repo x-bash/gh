@@ -1,8 +1,6 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-# https://docs.github.com/cn/rest/reference/users
-
 ___x_cmd_gh_user(){
     param:scope     "github/$O"
     param:dsl       '
@@ -18,22 +16,8 @@ subcmd:
         echo "Command Not Found. Show help." >&2
         return 0
     fi
-
-    # list issues of user
-    # list projects of user
-
     "___x_cmd_gh_user_${PARAM_SUBCMD}" "$@"
 }
-
-# ___x_cmd_gh_users() {
-#     local O="${O:-GITHUB_DEFAULT}"
-#     param <<A
-# scope:  github/$O
-# options: 
-#     #1          "Provide owner"
-# A
-#     ___x_cmd_gh_get "/v5/users/$name" | json_extract "html_url"
-# }
 
 ___x_cmd_gh_user_info() {
     param:scope     "github/$O"
@@ -51,21 +35,16 @@ options:
         data=$(___x_cmd_gh_get "/users/$1")
     fi
     print "$data"
-    
-#     ___json_awk_get name=.login html_url=.html_url types=.type <<A
-#     $data
-# A
-#     [ -n "$name" ] && ui tf "true" "success" "- name:$name" "- url:$html_url" "- type:$types"
 }
 
-# https://github.com/api/v5/swagger#/getV5UserRepos
-# ___x_cmd_gh_user_repo_list() {
 ___x_cmd_gh_user_repo() {
     param:scope     "github/$O"
     param:dsl       '
+subcmd:
+    ls          "list user repo"
 type: 
     authority = all public private
-    group = owner collaborator organization_member enterprise_member admin 
+    group = owner collaborator organization_member  admin 
     sort = created updated pushed full_name
     direction = desc asc
 options:
@@ -79,7 +58,6 @@ options:
     ___x_cmd_gh_get_multi "/user/repos" visibility affiliation sort direction
 }
 
-# https://github.com/api/v5/swagger#/getV5Emails
 ___x_cmd_gh_user_email(){
     param:void
     [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/emails\")\"" \
