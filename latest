@@ -4,7 +4,7 @@
 # author:       Li Junhao           l@x-cmd.com
 
 xrc http param json str ui
-
+xrc ui/lib/table
 # TODO: Precompile it into one file.
 ___x_cmd_gh_xrc(){
     local i
@@ -14,9 +14,9 @@ ___x_cmd_gh_xrc(){
     done
 }
 
-___x_cmd_gh_xrc  config token repo/main current utils user/main org/org_main
+___x_cmd_gh_xrc  config token repo/main current utils user/main org/main
 
- 
+
 x log init gh
 
 ___x_cmd_gh(){
@@ -71,9 +71,6 @@ if [ -z "$DO_NOT_INIT_GITHUB_DEFAULT" ]; then
     ____x_cmd_gh_make "GITHUB_DEFAULT" && DO_NOT_INIT_GITHUB_DEFAULT="true"
 fi
 
-if [ -z "$XRC_NO_ADVISE" ] && [ -n "${BASH_VERSION}${ZSH_VERSION}" ] && [ "${-#*i}" != "$-" ]; then
-    xrc advise/latest
-    advise gh
-fi
+
 xrc setmain ___x_cmd_gh
 

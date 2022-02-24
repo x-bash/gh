@@ -18,8 +18,8 @@ subcmd:
         gh_log error "Command Not Found. Show help."
         return 0
     fi
-    
-    "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@" 
+
+    "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@"
 }
 
 # arguments NAME
@@ -61,7 +61,7 @@ option:
     local name
     for name in "$@"; do
         {
-            ___x_cmd_gh_post_json "/user/repos" name="${name##*/}" 
+            ___x_cmd_gh_post_json "/user/repos" name="${name##*/}"
             code=$?
             if [ $code -ne 0 ]; then
                 gh_log error "Creating repo failure: $name. Code is $code. "
@@ -116,7 +116,7 @@ option:
                 gh_log error "Creating repo failure: $name. Code is $code. "
                 return $code
             fi
-        } 
+        }
     done
 }
 
@@ -127,20 +127,16 @@ option:
 
 ___x_cmd_gh_repo_ls() {
     param:void
-    local owner
-    owner="$1"
-
-    if [ -z "$owner" ]; then
-        ___x_cmd_gh_user_repo "$@"
-        return
-    fi
-
     local owner_type
-    owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
-    if [ -n "$owner_type" ] && [ -n "$owner" ]; then
-        "___x_cmd_gh_${owner_type}_repo" ls "$@"
-        return
+    if [ $# -eq 0 ];then
+        owner_type=user
+    else
+        local owner="$1"
+        owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
     fi
+
+    ___ui_table_json "$(printf "%s" "___x_cmd_gh_${owner_type}_repo ls $@ || return 1" )" \
+        Id=.id Name=.name Owner=.owner.login Url=.html_url && return 0
 
     gh_log error "Please provide owner and owner_type"
     return 1
@@ -174,7 +170,7 @@ options:
     local i
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
-        ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null 
+        ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null
         if [ $? -eq 0 ]; then
             gh_log info "deleted repo $i"
             # ui tf "true" "deleted repo $i"

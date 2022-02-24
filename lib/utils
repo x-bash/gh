@@ -22,7 +22,7 @@ ___x_cmd_gh_get_multi() {
         ___x_cmd_gh_get "$@" page per_page
         return
     fi
-    local i=1 
+    local i=1
     local total_page=100000
     while [ "$i" -le "$total_page" ]; do
         ___x_cmd_gh_get "$@" page="$i" per_page=100
@@ -117,14 +117,6 @@ ___x_cmd_gh_parse_owner_repo() {
     if [ -z "$owner" ]; then
         owner="$(___x_cmd_gh_current_owner)"
     fi
-}
-
-
-___x_cmd_gh_table() {
-    local tmp
-    tmp=$1
-    shift
-    echo "$tmp" 2>&1 | ui table jsonfmt "$@"
 }
 
 ___x_cmd_gh_json_query(){
