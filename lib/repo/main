@@ -1,8 +1,6 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-# ___x_cmd_gh_xrc repo/member repo/page repo/pr repo/release repo/tag
-
 ___x_cmd_gh_repo(){
     param:scope     "github/$O"
     param:dsl       '
@@ -164,49 +162,18 @@ options:
     #n      "Provide repo list"    <>
 '
     param:run
-    local confirm
-    confirm=$(ui select "text" "Are you sure you want to delete repo $*" "yes" "no")
-    [ "$confirm" = "yes" ] && return
+
+    ___x_cmd_ui_select "Are you sure you want to delete repo $*" "yes" "no" "---" "---"
+    [ "$___X_CMD_UI_SELECT_CURENT_ITEM" = "yes" ] || return
+
     local i
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
         ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null
+
         if [ $? -eq 0 ]; then
-            gh_log info "deleted repo $i"
-            # ui tf "true" "deleted repo $i"
-        else
-            gh_log error "Code is $?. Deleting repo failure: $i. Probably because it desn't exists."
+                ___x_cmd_ui_tf "true"  "deleted repo $owner_repo"
+        else    ___x_cmd_ui_tf "false" "Deleting repo failure: $owner_repo. Probably because it desn't exists."
         fi
     done
-}
-
-___x_cmd_gh_repo_clear() {
-    param:scope     "github/$O"
-    param:dsl       '
-options:
-    #1|--repo          "Repo name"             <>:repo
-'
-    param:run
-
-    ___x_cmd_gh_param_init_owner_repo
-    local confirm
-    confirm=$(ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
-    [ "$confirm" = "no" ] && return
-    ___x_cmd_gh_put_json "/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
-    gh_log error "clear repo failure: $owner_repo"
-}
-
-___x_cmd_gh_repo_review(){
-    param:scope     "github/$O"
-    param:dsl       '
-options:
-    #1|--repo             "Repo name"                   <>:repo
-    --assignees           "assignees username"          <>:name
-    --testers             "testers usrename"            <>:name
-    --assignees_number    "number of reviewers"         <>:number="1"
-    --testers_number      "number of people tested"     <>:number="1"
-'
-    param:run
-    ___x_cmd_gh_param_init_owner_repo
-    ___x_cmd_gh_put_json "/repos/${owner_repo}/reviewer" assignees testers assignees_number testers_number
 }
