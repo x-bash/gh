@@ -133,14 +133,12 @@ ___x_cmd_gh_json_query(){
     done
 }
 
-# ___x_cmd_gh_json_query_rename(){
-#     local data="$1"
-#     shift
-#     local tmp="___x_cmd_gh_json_query $data"
-#     while [ $# -gt 0 ];do
-#         tmp="$tmp ${1##*=}"
-#     shift
-#     echo "$tmp">>a
-#     done
-# }
-
+#TODO:awk!!!
+___x_cmd_gh_json_query_rename(){
+    local data="$1"
+    shift
+    while [ $# -gt 0 ];do
+        eval "${1%%=*}"="$(___x_cmd_gh_json_query "$data" "${1##*=}")"
+        shift
+    done
+}
