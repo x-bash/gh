@@ -5,6 +5,7 @@ ___x_cmd_gh_org(){
     param:scope     "github/$O"
     param:dsl       '
 subcmd:
+    ls                      "get organizations list"
     info                    "Show information"
     repo                    "List all repos"
     member                  "member management"
@@ -12,31 +13,43 @@ subcmd:
     param:run
 
     if [ -z "$PARAM_SUBCMD" ]; then
-        gh_log error "Command Not Found. Show help."
-        return 0
+        gh_log warn "Command Not Found. Show help."
+        ___x_cmd_gh_org _param_help_doc
+        return 1
     fi
 
     "___x_cmd_gh_org_${PARAM_SUBCMD}" "$@"
 }
 
 
+___x_cmd_gh_org_ls() {
+    param:void
+
+    local url
+    if [ $# -gt 0 ]; then
+         url="/users/$1/orgs"
+    else url="/user/orgs"
+    fi
+
+    ___ui_table_json "$(printf "%s" "___x_cmd_gh_get_multi $url || return 1" )" Id=.id Name=.login && return 0
+
+    ___x_cmd_ui_tf "false" "get $1 organizations ls fail"
+}
+
 ___x_cmd_gh_org_info() {
     param:scope     "github/$O"
     param:dsl       '
-type:
 options:
-    --admin      "admin"       <>:bool=false
+    #1|--org        "org space address"    <>:address
 '
     param:run
 
-    if [ $# -eq 0 ]; then
-        ___x_cmd_gh_get_multi "/user/orgs" page per_page
-        [ $? -eq 1 ] && return 1
-    else
-        ___x_cmd_gh_get "/orgs/${1:?Provide organization}"
-        [ $? -eq 1 ] && return 1
-    fi
-    return 0
+    [ "$org" = "" ] && gh_log error "Organization name is required" && return 1
+
+    ___x_cmd_gh_get "/orgs/$org" && return 0
+
+    __x_cmd_ui_tf "false" "get $1 organizations info fail"
+    return 1
 }
 
 ___x_cmd_gh_org_repo(){
@@ -87,23 +100,23 @@ ___x_cmd_gh_org_member_ls() {
     param:scope     "github/$O"
     param:dsl       '
 options:
-    #1|--org        "org space address"    <>:address
     --filter        "Filter members returned in the list."  <>="all"
     --role          "Repo name"            <>="all"         = admin member all
+    #1|--org        "org space address"    <>:address
 '
     param:run
-    ___x_cmd_gh_get_multi "/orgs/${org##*/}/members" role page per_page
+    ___ui_table_json "$(printf "%s" "___x_cmd_gh_get_multi "/orgs/${org##*/}/members" role filter || return 1" )" \
+        Id=.id UserName=.login Url=.html_url  && return 0
 }
 
 ___x_cmd_gh_org_member_user() {
     param:scope     "github/$O"
     param:dsl      '
 options:
-    #1|--org            "org space address"         <>:address
     --username          "username:space address"    <>:name
+    #1|--org            "org space address"         <>:address
 '
     param:run
-
     ___x_cmd_gh_get "/orgs/${org##*/}/memberships/${username##*/}"
 }
 
