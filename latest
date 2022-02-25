@@ -5,6 +5,7 @@
 
 xrc http param json str ui
 xrc ui/lib/table
+xrc gh/lib/_type/main
 # TODO: Precompile it into one file.
 ___x_cmd_gh_xrc(){
     local i
@@ -24,12 +25,8 @@ ___x_cmd_gh(){
     param:dsl       '
 subcommand:
     repo                                    "repo command"
-    issue                                   "issue"
-    pr                                      "pull request"
     current                                 "set current owner, repo"
-    release                                 "release management"
     org                                     "manage org"
-    tag                                     "repo tag"
     user                                    "user"
     config                                  "save, load, which"
     token                                   "set token"
@@ -37,8 +34,9 @@ subcommand:
     param:run
 
     if [ -z "${PARAM_SUBCMD}" ]; then
-        echo "Command Not Found. Show help." >&2
-        return 0
+        gh_log warn "Subcmd Not Found."
+        ___x_cmd_gh _param_help_doc
+        return 1
     fi
 
     case "${PARAM_SUBCMD}" in
@@ -61,11 +59,19 @@ ____x_cmd_gh_make() {
     http "@$O_ORIGINAL" header Accept "application/vnd.github.v3+json"
 
     O=$O_ORIGINAL ___x_cmd_gh_config_load >/dev/null
+
     if [ $? -eq 0 ] && [ -n "$(O="$O_ORIGINAL" ___x_cmd_gh_token)" ]; then
-        O="$O_ORIGINAL" ___x_cmd_gh_current_owner
-    else
-        gh_log info "token is null"
+        local user
+        user="$(O="$O_ORIGINAL" ___x_cmd_gh_current_owner)" || return 1
+        gh_log info "Hi $user! You've successfully authenticated."
     fi
+
+    local info
+    info=$(printf "\n%s %s \n%s" \
+         "$(ui yellow 'You need run command to add token:')" \
+         "$(ui bold cyan "\`gt token <token>\`")" \
+         "$(ui 'https://github.com/settings/tokens')")
+    gh_log warn "Token is null.${info}"
 }
 
 if [ -z "$DO_NOT_INIT_GITHUB_DEFAULT" ]; then
