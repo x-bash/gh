@@ -62,10 +62,14 @@ option:
     local name
     for name in "$@"; do
         {
-            ___x_cmd_gh_post_json "/user/repos" name="${name##*/}"
+            local data
+            data="$(___x_cmd_gh_post_json "/user/repos" name="${name##*/}")"
             [ $? -ne 0 ] && ___x_cmd_ui_tf "false" "Creating repo failure: $name." && return 1
-
-            ___x_cmd_ui_tf "true" "create repo successfully"
+            local repo_id
+            local url
+            local repo_owner
+            ___x_cmd_gh_json_query_rename "$data" repo_id=.id url=.html_url repo_owner=.owner.login
+            ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
         }
     done
 }
@@ -153,7 +157,15 @@ options:
     param:run
 
     ___x_cmd_gh_param_init_owner_repo
-    ___x_cmd_gh_get "/repos/${owner_repo}"
+    local data
+    data="$(___x_cmd_gh_get "/repos/${owner_repo}")"
+
+    [ $? -ne 0 ] && ___x_cmd_ui_tf "false" "Fail. Couldn't find any repo: ${owner_repo}" && return 1
+    local id
+    local name
+    local html_url
+    ___x_cmd_gh_json_query_rename "$data" id=.id html_url=.html_url name=.full_name
+    ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $id" "name: $name" "url: $html_url"
 }
 
 ___x_cmd_gh_repo_del() {
