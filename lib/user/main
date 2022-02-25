@@ -49,21 +49,28 @@ type:
     direction = desc asc
 options:
     --visibility    "visibility"        <>:authority="all"
-    --affiliation   "affiliation"       <>:group="owner"
+    --affiliation   "affiliation"       <>:group="organization_member"
     --sort          "sort"              <>:sort="created"
     --direction     "direction"         <>:direction="desc"
 '
     param:run
 
-    ___x_cmd_gh_get_multi "/user/repos" visibility affiliation sort direction
+    local url
+    if [ $# -gt 0 ]; then
+         url="/users/$1/repos"
+    else url="/user/repos"
+    fi
+
+    ___x_cmd_gh_get_multi "$url" visibility affiliation sort direction
+
 }
 
 ___x_cmd_gh_user_email(){
     param:void
-    [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/emails\")\"" \
+    [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/emails\")\"" \
         . email state && return
 
-    ___x_cmd_gh_get_multi "/v5/emails"
+    ___x_cmd_gh_get_multi "/emails"
 }
 
 ___x_cmd_gh_user_issue(){
@@ -87,6 +94,6 @@ options:
     --finished_at   "finish date"                                  <>=""
 '
     param:run
-    ___x_cmd_gh_get_multi "/v5/user/issues" filter state labels direction since \
+    ___x_cmd_gh_get_multi "/user/issues" filter state labels direction since \
         schedule deadline created_at finished_at
 }

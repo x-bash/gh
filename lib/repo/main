@@ -192,7 +192,7 @@ options:
     local confirm
     confirm=$(ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
     [ "$confirm" = "no" ] && return
-    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
+    ___x_cmd_gh_put_json "/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
     gh_log error "clear repo failure: $owner_repo"
 }
 
@@ -208,5 +208,5 @@ options:
 '
     param:run
     ___x_cmd_gh_param_init_owner_repo
-    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/reviewer" assignees testers assignees_number testers_number
+    ___x_cmd_gh_put_json "/repos/${owner_repo}/reviewer" assignees testers assignees_number testers_number
 }
