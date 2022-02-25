@@ -9,6 +9,7 @@ subcmd:
     ls              "list repo of owner"
     info            "Show detailed information of repo"
     del             "Remove repo"
+    member          "manage member"
 '
     param:run
 

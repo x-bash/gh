@@ -40,17 +40,13 @@ options:
     --state             "state"                                             <>:state="open"
     --head              "source branch. Format: [username:]<branch>"        <>=""
     --base              "target branch. Format: [username:]<branch>"        <>=""
-    --since             "since"                                             <>=""
     --sort              "sort"                                              <>:sort="created"
     --direction         "direction"                                         <>:direction="desc"
-    --milestone_number  "milestone id"                                      <>:numbers=""
-    --labels            "labels"                                            <>=""
 '
     param:run
 
     ___x_cmd_gh_param_init_owner_repo
-    ___x_cmd_gh_get "/v5/repos/$owner_repo/pulls" state head base sort since \
-        direction milestone_number labels page per_page
+    ___x_cmd_gh_get "/repos/$owner_repo/pulls" state head base sort direction>a.json
 }
 
 # Assume pr and owner_repo are environments
@@ -76,7 +72,7 @@ options:
     param:run
 
     ___parse_pr_init_owner_repo_and_pr
-    ___x_cmd_gh_get "/v5/repos/${owner_repo}/pulls/$pr"
+    ___x_cmd_gh_get "/repos/${owner_repo}/pulls/$pr"
 }
 
 
@@ -92,7 +88,7 @@ options:
     param:run
 
     ___parse_pr_init_owner_repo_and_pr
-    ___x_cmd_gh_get "/v5/repos/${owner_repo}/pulls/$pr/operate_logs" sort
+    ___x_cmd_gh_get "/repos/${owner_repo}/pulls/$pr/operate_logs" sort
 }
 
 ___x_cmd_gh_repo_pr_commit() {
@@ -103,7 +99,7 @@ options:
 '
     param:run
     ___parse_pr_init_owner_repo_and_pr
-    ___x_cmd_gh_get "/v5/repos/${owner_repo}/pulls/$pr/commits"
+    ___x_cmd_gh_get "/repos/${owner_repo}/pulls/$pr/commits"
 }
 
 ___x_cmd_gh_repo_pr_view() {
@@ -148,7 +144,7 @@ options:
 
     ___x_cmd_gh_param_init_owner_repo
 
-    ___x_cmd_gh_post_json "/v5/repos/$owner_repo/pulls" title head base body milestone_number\
+    ___x_cmd_gh_post_json "/repos/$owner_repo/pulls" title head base body milestone_number\
         labels issue assignees testers assignees_number testers_number prune_source_branch
 }
 
@@ -172,7 +168,7 @@ options:
     param:run
 
     ___parse_pr_init_owner_repo_and_pr
-    ___x_cmd_gh_patch_json "/v5/repos/${owner_repo}/pulls/$pr" title body milestone_number\
+    ___x_cmd_gh_patch_json "/repos/${owner_repo}/pulls/$pr" title body milestone_number\
         labels assignees_number testers_number state
 }
 
@@ -191,7 +187,7 @@ options:
     param:run
 
     ___parse_pr_init_owner_repo_and_pr
-    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/pulls/$pr/merge"  merge_method \
+    ___x_cmd_gh_put_json "/repos/${owner_repo}/pulls/$pr/merge"  merge_method \
         prune_source_branch title description
 }
 
