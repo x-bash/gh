@@ -5,7 +5,6 @@
 
 xrc http param json str ui
 xrc ui/lib/table
-xrc gh/lib/_type/main
 # TODO: Precompile it into one file.
 ___x_cmd_gh_xrc(){
     local i
@@ -16,8 +15,7 @@ ___x_cmd_gh_xrc(){
 }
 
 ___x_cmd_gh_xrc  utils config token repo/main current user/main org/main \
-    repo/member/main repo/pr/main
-
+    repo/member/main repo/pr/main _type/main
 
 x log init gh
 
@@ -64,6 +62,7 @@ ____x_cmd_gh_make() {
         local user
         user="$(O="$O_ORIGINAL" ___x_cmd_gh_current_owner)" || return 1
         gh_log info "Hi $user! You've successfully authenticated."
+        return 0
     fi
 
     local info
