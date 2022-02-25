@@ -15,7 +15,7 @@ ___x_cmd_gh_xrc(){
 }
 
 ___x_cmd_gh_xrc  utils config token repo/main current user/main org/main \
-    repo/member/main
+    repo/member/main repo/pr/main
 
 
 x log init gh

@@ -11,8 +11,6 @@ subcmd:
     create          "create pull request"
     update          "update pull requests"
     merge           "merge pull requests"
-    assign          "assign request to somebody"
-    testers         "Designation pull requests testers"
 '
     param:run
 
@@ -131,21 +129,16 @@ options:
     --head                  "source branch. Format: [username:]<branch>"                    <>:name
     --base                  "target branch. Format: [username:]<branch>"                    <>:name
     --body                  "pull request content"                                          <>=""
-    --milestone_number      "milestone id"                                                  <>:numbers=""
-    --labels                "labels"                                                        <>=""
-    --issue                 "issue id"                                                      <>:numbers=""
-    --assignees             "reviewer username list. Format: <username>[,<username>]"       <>:name=""
-    --testers               "tester username list. Format: <username>[,<username>]"         <>:name=""
-    --assignees_number      "minimum number of reviewers"                                   <>:numbers=""
-    --testers_number        "minimum test number"                                           <>:numbers=""
-    --prune_source_branch   "prune_source_branch"                                           <>:bool=false
+    --maintainer_can_modify "Indicates whether maintainers can modify the pull request."    <>:Bool=true
+    --draft                 "Indicates whether the pull request is a draft"                 <>=""
+    --issue                 "association issue"                                             <>=""
 '
     param:run
 
     ___x_cmd_gh_param_init_owner_repo
 
-    ___x_cmd_gh_post_json "/repos/$owner_repo/pulls" title head base body milestone_number\
-        labels issue assignees testers assignees_number testers_number prune_source_branch
+    ___x_cmd_gh_post_json "/repos/$owner_repo/pulls" title head base body maintainer_can_modify \
+        draft issue
 }
 
 ___x_cmd_gh_repo_pr_update() {
