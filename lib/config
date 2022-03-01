@@ -42,8 +42,16 @@ ___x_cmd_gh_config_load() {
     local ___github_path="${1:-$HOME/.x-cmd/.config/x-bash/app.github.config/$O}"
     [ ! -f "$___github_path" ] && gh_log info "info:There is no history config" && return
     ___x_cmd_gh_default load "github_$O" "$___github_path"
-    ___x_cmd_gh_default dump "github_$O"
+    local token
     token="$(___x_cmd_gh_default get "github_$O" token)"
-    ___x_cmd_gh_token "false" "$token" >&2
+    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" header put Authorization "token $token"
 }
 # EndSection
+
+___x_cmd_gh_config_load() {
+     param:void
+    local O="${O:-GITHUB_DEFAULT}"
+    param_default load "github_$O" "$___github_path"
+    local token
+    token="$(param_default get "github_$O" token)"
+}
