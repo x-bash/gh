@@ -28,7 +28,7 @@ ___x_cmd_gh_token(){
             gh_log error "set default token $1 fail,Please check if it is a valid token"
             return 1
         fi
-        param_default put "gitee_$O" "token" "$1"
+        ___x_cmd_gh_default put "github_$O" "token" "$1"
         ___x_cmd_ui_tf "true" "set default token successfully,The default user is $user"
         return 0
     fi

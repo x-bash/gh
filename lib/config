@@ -47,11 +47,3 @@ ___x_cmd_gh_config_load() {
     http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" header put Authorization "token $token"
 }
 # EndSection
-
-___x_cmd_gh_config_load() {
-     param:void
-    local O="${O:-GITHUB_DEFAULT}"
-    param_default load "github_$O" "$___github_path"
-    local token
-    token="$(param_default get "github_$O" token)"
-}
