@@ -23,6 +23,7 @@ ___x_cmd_gh_token(){
 
         http "@___x_cmd_gh_$O" header put Authorization "token $1"
         local user
+        ___x_cmd_gh_default remove "github_$O" "owner"
         user="$(___x_cmd_gh_current_owner)"
         if [ -z "$user" ]; then
             http "@___x_cmd_gh_$O" header put Authorization "token $tmp_token"

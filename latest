@@ -28,6 +28,7 @@ subcommand:
     user                                    "user"
     config                                  "save, load, which"
     token                                   "set token"
+    release                                 "manage release"
 '
     param:run
 
