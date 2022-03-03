@@ -29,7 +29,7 @@ ___x_cmd_git_config_set(){
     local val=${4:?Provide the value that needs to be set}
 
     local config
-    config=$(cat "$url")
+    config=$(cat "$url" 2>/dev/null)
     if [ -z "$config" ];then
         printf "%s\n" "$host:
     $key: $val">"$url"
