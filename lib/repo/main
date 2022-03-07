@@ -105,18 +105,17 @@ option:
     # TODO:owner may be personal
     local name
     for name in "$@"; do
-        {
-            ___x_cmd_gh_post_json "/orgs/$org/repos" name description homepage has_issues \
-                has_wiki has_projects auto_init  visibility="$access" gitignore_template license_template | (
-                    ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
-                    if [ -n "$repo_id" ];then
-                        ___x_cmd_ui_tf true "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
-                    else
-                        ___x_cmd_ui_tf false "Creating repo failure: $name."
-                        return 1
-                    fi
-                )
-        }
+        ___x_cmd_gh_post_json "/orgs/$org/repos" name description homepage has_issues \
+                has_wiki has_projects auto_init  visibility="$access" gitignore_template license_template \
+        | (
+            ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
+            if [ -n "$repo_id" ]; then
+                ___x_cmd_ui_tf true "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
+            else
+                ___x_cmd_ui_tf false "Creating repo failure: $name."
+                return 1
+            fi
+        )
     done
 }
 
@@ -158,7 +157,8 @@ options:
     ___x_cmd_gh_param_init_owner_repo
 
     ___x_cmd_gh_get "/repos/${owner_repo}" | (
-        if ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name; then
+        ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name;
+        if [ -n "$id" ]; then
             ___x_cmd_ui_tf true     "Creating repo $name success" "repo_id: $id" "name: $name" "url: $html_url"
         else
             ___x_cmd_ui_tf false    "Fail. Couldn't find any repo: ${owner_repo}"
@@ -181,6 +181,7 @@ options:
     local i
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
+        # TODO
         if ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null; then
             ___x_cmd_ui_tf true  "deleted repo $owner_repo"
         else
