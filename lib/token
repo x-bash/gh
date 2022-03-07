@@ -58,7 +58,7 @@ subcommand:
     "____x_cmd_gh_auth_${PARAM_SUBCMD}" "$@"
 }
 
-____x_cmd_gh_auth_log(){
+____x_cmd_gh_auth_login(){
     param:void
     local client_id=3d0f25caedcc0e18c985
     local scope
@@ -70,7 +70,7 @@ ____x_cmd_gh_auth_log(){
 
     http "@____x_cmd_log_GITHUB" post json "https://github.com/login/device/code" client_id="$client_id" scope="$scope" | (
         ___x_cmd_git_json_query_rename  device_code=.device_code user_code=.user_code verification_uri=.verification_uri
-        gh_log info "$user_code"
+        gh_log info "Copy your one-time code:$user_code"
         http browse "$verification_uri"
         local gh_status="authorization_pending"
         local data
