@@ -27,12 +27,15 @@ ___x_cmd_gh_org_ls() {
 
     local url
     if [ $# -gt 0 ]; then
-         url="/users/$1/orgs"
-    else url="/user/orgs"
+        url="/users/$1/orgs"
+    else
+        url="/user/orgs"
     fi
 
-    ___ui_table_json "$(printf "%s" "___x_cmd_gh_get_multi $url || return 1" )" Id=.id Name=.login && return 0
-
+    if ___ui_table_json Id=.id Name=.login \
+        -- "___x_cmd_gh_get_multi $url"; then
+        return 0
+    fi
     ___x_cmd_ui_tf "false" "get $1 organizations ls fail"
 }
 
@@ -77,6 +80,7 @@ options:
     #1|--org   "org space address"      <>:address
 '
     param:run
+    
      ___ui_table_json "$(printf "%s" "___x_cmd_gh_get_multi "/orgs/$org/repos" type || return 1" )" \
       Id=.id Name=.name OwnerName=.owner.login IsPrivate=.private && return 0
 
