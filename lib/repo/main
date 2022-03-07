@@ -142,9 +142,6 @@ ___x_cmd_gh_repo_ls() {
         owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
     fi
 
-    # ___ui_table_json ___x_cmd_gh_repo_ls_func \
-    #     Id=.id Name=.name Owner=.owner.login Url=.html_url && return 0
-
     if ___ui_table_json Id=.id Name=.name Owner=.owner.login Url=.html_url \
         -- "___x_cmd_gh_${owner_type}_repo" ls "$@"; then
         return 0
