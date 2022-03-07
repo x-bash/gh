@@ -69,14 +69,14 @@ ____x_cmd_gh_auth_log(){
     http "@____x_cmd_log_GITHUB" header put "Accept" "application/json"
 
     http "@____x_cmd_log_GITHUB" post json "https://github.com/login/device/code" client_id="$client_id" scope="$scope" | (
-        ___x_cmd_gh_json_query_rename  device_code=.device_code user_code=.user_code verification_uri=.verification_uri
+        ___x_cmd_git_json_query_rename  device_code=.device_code user_code=.user_code verification_uri=.verification_uri
         gh_log info "$user_code"
         http browse "$verification_uri"
         local gh_status="authorization_pending"
         local data
         while [ "$gh_status" = "authorization_pending" ];do
             data="$(http "@____x_cmd_log_GITHUB" post json https://github.com/login/oauth/access_token client_id="$client_id" grant_type="$grant_type" device_code="$device_code")"
-            ___x_cmd_gh_json_query_rename "$data" gh_status=.error
+            ___x_cmd_git_json_query_rename "$data" gh_status=.error
             sleep 10
         done
     )

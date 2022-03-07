@@ -63,7 +63,7 @@ option:
     for name in "$@"; do
         {
             ___x_cmd_gh_post_json "/user/repos" name="${name##*/}" | (
-            ___x_cmd_gh_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
+            ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
             if [ -n "$repo_id" ];then
                 ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
             else
@@ -115,7 +115,7 @@ option:
         {
             ___x_cmd_gh_post_json "/orgs/$org/repos" name description homepage has_issues \
                 has_wiki has_projects auto_init  visibility="$access" gitignore_template license_template | (
-                    ___x_cmd_gh_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
+                    ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
                     if [ -n "$repo_id" ];then
                         ___x_cmd_ui_tf true "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
                     else
@@ -168,7 +168,7 @@ options:
     ___x_cmd_gh_param_init_owner_repo
 
     ___x_cmd_gh_get "/repos/${owner_repo}" | (
-        if ___x_cmd_gh_json_query_rename id=.id html_url=.html_url name=.full_name; then
+        if ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name; then
             ___x_cmd_ui_tf true     "Creating repo $name success" "repo_id: $id" "name: $name" "url: $html_url"
         else
             ___x_cmd_ui_tf false    "Fail. Couldn't find any repo: ${owner_repo}"
