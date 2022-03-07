@@ -122,10 +122,8 @@ ___x_cmd_gh_parse_owner_repo() {
 ___x_cmd_gh_json_query(){
     local awkfile
     awkfile="$(xrc cat awk/lib/default.awk awk/lib/json.awk awk/lib/jiter.awk )"
-    local data="$1"
-    shift
     while [ $# -gt 0 ];do
-        awk "$awkfile""
+    awk "$awkfile""
 {
     jiter_print_eqarr_after_tokenize(\$0,\"$1\", \"\n\")
 }"
