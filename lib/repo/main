@@ -49,23 +49,19 @@ option:
     local private=true
     [ "$access" = "public" ] && private=false
 
-    local has_issues=true
-    local has_wiki=true
-    local has_projects=true
-    local auto_init=true
-    [ -n "$no_issues" ] &&      has_issues=false
-    [ -n "$no_wiki" ] &&        has_wiki=false
-    [ -n "$no_projects" ] &&     has_projects=false
-    [ -n "$no_auto_init" ] &&   auto_init=false
+    local has_issues="${no_issues:+false}";      has_issues="${has_issue:-true}"
+    local has_wiki="${no_wiki:+false}";          has_wiki="${has_wiki:-true}"
+    local has_projects="${no_projects:+false}";  has_projects="${has_projects:-true}"
+    local auto_init="${no_auto_init:+false}";    auto_init="${auto_init:-true}"
 
     [ $# -eq 0 ] && gh_log info "repo create name is null" && return
     local name
     for name in "$@"; do
         {
             ___x_cmd_gh_post_json "/user/repos" name="${name##*/}" | (
-            ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
-            if [ -n "$repo_id" ];then
-                ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $repo_id" "repo_owner: $repo_owner" "url: $url"
+            ___x_cmd_git_json_query_rename id=.id url=.html_url owner=.owner.login
+            if [ -n "$id" ];then
+                ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $id" "repo_owner: $owner" "url: $url"
             else
                 ___x_cmd_ui_tf "false" "Creating repo failure: $name."
                 return 1
@@ -101,14 +97,11 @@ option:
     local private=true
     [ "$access" = "public" ] && private=false
 
-    local has_issues=true
-    local has_wiki=true
-    local has_projects=true
-    local auto_init=true
-    [ -n "$no_issues" ] && has_issues=false
-    [ -n "$no_wiki" ] && has_wiki=false
-    [ -n "$no_projects" ] && has_projects=false
-    [ -n "$no_auto_init" ] && auto_init=false
+    local has_issues="${no_issues:+false}";      has_issues="${has_issue:-true}"
+    local has_wiki="${no_wiki:+false}";          has_wiki="${has_wiki:-true}"
+    local has_projects="${no_projects:+false}";  has_projects="${has_projects:-true}"
+    local auto_init="${no_auto_init:+false}";    auto_init="${auto_init:-true}"
+
     # TODO:owner may be personal
     local name
     for name in "$@"; do
