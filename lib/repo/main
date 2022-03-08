@@ -23,7 +23,49 @@ subcmd:
     "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@"
 }
 
-# arguments NAME
+# Section: List Repos
+___x_cmd_gh_repo_ls() {
+    param:void
+    local owner_type
+    if [ $# -eq 0 ];then
+        owner_type=user
+    else
+        local owner="$1"
+        owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
+    fi
+
+    if ___ui_table_json Id=.id Name=.name Owner=.owner.login Url=.html_url \
+        -- "___x_cmd_gh_${owner_type}_repo" ls "$@"; then
+        return 0
+    fi
+
+    ___x_cmd_ui_tf false "Please provide owner and owner_type"
+    return 1
+}
+# EndSection
+
+# Section: Info & Creation & Remove
+___x_cmd_gh_repo_info() {
+    param:scope     "github/$O"
+    param:dsl       '
+options:
+    #1|--repo          "Repo name"         <>:repo
+'
+    param:run
+
+    ___x_cmd_gh_param_init_owner_repo
+
+    ___x_cmd_gh_get "/repos/${owner_repo}" | (
+        ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name;
+        if [ -n "$id" ]; then
+            ___x_cmd_ui_tf true     "repo $name info:" "repo_id: $id" "name: $name" "url: $html_url"
+        else
+            ___x_cmd_ui_tf false    "Fail. Couldn't find any repo: ${owner_repo}"
+            return 1
+        fi
+    )
+}
+
 ___x_cmd_gh_repo_create() {
     local O="${O:-GITHUB_DEFAULT}"
 
@@ -86,54 +128,6 @@ option:
     done
 }
 
-
-############################
-# Section 5: List Repos TODO:
-############################
-
-___x_cmd_gh_repo_ls() {
-    param:void
-    local owner_type
-    if [ $# -eq 0 ];then
-        owner_type=user
-    else
-        local owner="$1"
-        owner_type="$(___x_cmd_gh_owner_type_query "$owner")"
-    fi
-
-    if ___ui_table_json Id=.id Name=.name Owner=.owner.login Url=.html_url \
-        -- "___x_cmd_gh_${owner_type}_repo" ls "$@"; then
-        return 0
-    fi
-
-    ___x_cmd_ui_tf false "Please provide owner and owner_type"
-    return 1
-}
-
-############################
-# Section 7: Repo - Deletion & Info & Creation
-############################
-___x_cmd_gh_repo_info() {
-    param:scope     "github/$O"
-    param:dsl       '
-options:
-    #1|--repo          "Repo name"         <>:repo
-'
-    param:run
-
-    ___x_cmd_gh_param_init_owner_repo
-
-    ___x_cmd_gh_get "/repos/${owner_repo}" | (
-        ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name;
-        if [ -n "$id" ]; then
-            ___x_cmd_ui_tf true     "repo $name info:" "repo_id: $id" "name: $name" "url: $html_url"
-        else
-            ___x_cmd_ui_tf false    "Fail. Couldn't find any repo: ${owner_repo}"
-            return 1
-        fi
-    )
-}
-
 ___x_cmd_gh_repo_rm() {
     param:scope     "github/$O"
     param:dsl       '
@@ -156,3 +150,5 @@ options:
         fi
     done
 }
+# EndSection
+
