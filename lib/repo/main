@@ -49,7 +49,8 @@ ___x_cmd_gh_repo_info() {
     param:scope     "github/$O"
     param:dsl       '
 options:
-    #1|--repo          "Repo name"         <>:repo
+    --owner         "The owner of the repo needs to be updated"     <>=""
+    #1|--repo       "Repo name"                                     <>:repo
 '
     param:run
 
