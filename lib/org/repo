@@ -48,12 +48,12 @@ option:
     --no_wiki                   "Whether to disable wiki"
     --no_auto_init              "Disable auto init README"
     --is_template               "make this repo available as a template,Default:false"
-    --no_squash_merge        "Whether to allow squash merges for pull requests."
-    --no_merge_commit        "Whether to allow merge commits for pull requests."
-    --no_rebase_merge        "Whether to allow rebase merges for pull requests."
+    --no_squash_merge           "Whether to allow squash merges for pull requests."
+    --no_merge_commit           "Whether to allow merge commits for pull requests."
+    --no_rebase_merge           "Whether to allow rebase merges for pull requests."
     --allow_auto_merge          "Whether to allow Auto-merge to be used on pull requests,Default:false"
     --delete_branch_on_merge    "Either to allow automatically deleting head branches when pull requests are merged,Default:false"
-    #n                      "repo names"
+    #n                          "repo names"
 '
     param:run
 

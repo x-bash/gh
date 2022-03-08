@@ -23,7 +23,7 @@ subcmd:
 
     "___x_cmd_gh_repo_member_$PARAM_SUBCMD" "$@"
 }
-
+# Section: List
 ___x_cmd_gh_repo_member_ls() {
     param:scope     "github/$O"
     param:dsl       '
@@ -44,7 +44,9 @@ options:
         return 0
     fi
 }
+# EndSection
 
+# Section: Add & Rm
 ___x_cmd_gh_repo_member_add() {
     param:scope     "github/$O"
     param:dsl       '
@@ -104,3 +106,4 @@ options:
         fi
     done
 }
+# EndSection
