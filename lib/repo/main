@@ -32,17 +32,24 @@ ___x_cmd_gh_repo_create() {
 type:
     access  =   private public
 option:
-    --access                "private,public"                <>:access=private
-    --description           "description"                   <>=""
-    --homepage              "homepage"                      <>=""
-    --no_issues             "Provide issue"
-    --no_wiki               "Provide wiki"
-    --no_projects            "Provide has_projects"
-    --no_auto_init          "auto init README"
-    --gitignore_template    "Git Ignore"                    <>:Ignore=" "
-    --license_template      "license"                       <>:License=" "
-    --team_id               "the id of the team that will be granted access to this repository"   <>=""
-    #n                      "repo names"
+    --access                    "private,public"                                                        <>:access=private
+    --description               "description"                                                           <>=""
+    --homepage                  "homepage"                                                              <>=""
+    --team_id                   "the id of the team that will be granted access to this repository"     <>=""
+    --gitignore_template        "The desired language or platform to apply to the .gitignore."          <>:Ignore=" "
+    --license_template          "The license keyword of the open source license for this repository."   <>:License=" "
+    --no_issues                 "Whether to disable issue"
+    --no_projects               "Whether to disable has_projects"
+    --no_wiki                   "Whether to disable wiki"
+    --no_auto_init              "auto init README"
+    --no_squash_merge           "Whether to allow squash merges for pull requests."
+    --no_merge_commit           "Whether to allow merge commits for pull requests."
+    --no_rebase_merge           "Whether to allow rebase merges for pull requests."
+    --allow_auto_merge          "Whether to allow Auto-merge to be used on pull requests,Default:false"
+    --delete_branch_on_merge    "Whether to delete head branches when pull requests are merged"
+    --has_downloads             "Whether downloads are enabled."
+    --is_template               "can be used to generate new repositories"
+    #n                          "repo names"
 '
     param:run
 
@@ -53,12 +60,20 @@ option:
     local has_wiki="${no_wiki:+false}";          has_wiki="${has_wiki:-true}"
     local has_projects="${no_projects:+false}";  has_projects="${has_projects:-true}"
     local auto_init="${no_auto_init:+false}";    auto_init="${auto_init:-true}"
+    local allow_squash_merge="${no_squash_merge:+false}";   allow_squash_merge="${allow_squash_merge:-true}"
+    local allow_merge_commit="${no_merge_commit:+false}";   allow_merge_commit="${allow_merge_commit:-true}"
+    local allow_rebase_merge="${no_rebase_merge:+false}";   allow_rebase_merge="${allow_rebase_merge:-true}"
 
     [ $# -eq 0 ] && gh_log info "repo create name is null" && return
     local name
     for name in "$@"; do
         {
-            ___x_cmd_gh_post_json "/user/repos" name="${name##*/}" | (
+            ___x_cmd_gh_post_json "/user/repos" name="${name##*/}" \
+                private description homepage team_id gitignore_template \
+                license_template has_issues has_wiki has_projects auto_init \
+                allow_squash_merge allow_merge_commit allow_rebase_merge \
+                allow_auto_merge delete_branch_on_merge has_downloads is_template \
+            | (
             ___x_cmd_git_json_query_rename id=.id url=.html_url owner=.owner.login
             if [ -n "$id" ];then
                 ___x_cmd_ui_tf  "true" "Creating repo $name success" "repo_id: $id" "repo_owner: $owner" "url: $url"
@@ -78,18 +93,23 @@ ___x_cmd_gh_org_repo_create() {
 type:
     access  =   private public internal
 option:
-    --org                   "organization create repo"      <>:name
-    --description           "description"                   <>=""
-    --homepage              "homepage"                      <>:URL=""
-    --access                "private,public"                <>:access=private
-    --no_issues             "Provide issue"
-    --no_projects           "Provide has_projects"
-    --no_wiki               "Provide wiki"
-    --no_auto_init          "auto init README"
-    --is_template           "make this repo available as a template" <>:Bool=false
-    --gitignore_template    "Git Ignore"                    <>:Ignore=""
-    --license_template      "license"                       <>:License=""
-    --team_id               "the id of the team that will be granted access to this repository"   <>=""
+    --org                       "organization create repo"                                             <>:name
+    --description               "A short description of the repository."                               <>=""
+    --homepage                  "A URL with more information about the repository."                    <>:URL=""
+    --team_id                   "the id of the team that will be granted access to this repository"    <>=""
+    --gitignore_template        "Desired language or platform"                                         <>:Ignore=""
+    --license_template          "The license keyword of the open source license for this repository."  <>:License=""
+    --access                    "Can be public or private."                                            <>:access=private
+    --no_issues                 "Whether to disable issue"
+    --no_projects               "Whether to disable has_projects"
+    --no_wiki                   "Whether to disable wiki"
+    --no_auto_init              "Disable auto init README"
+    --is_template               "make this repo available as a template,Default:false"
+    --no_squash_merge        "Whether to allow squash merges for pull requests."
+    --no_merge_commit        "Whether to allow merge commits for pull requests."
+    --no_rebase_merge        "Whether to allow rebase merges for pull requests."
+    --allow_auto_merge          "Whether to allow Auto-merge to be used on pull requests,Default:false"
+    --delete_branch_on_merge    "Either to allow automatically deleting head branches when pull requests are merged,Default:false"
     #n                      "repo names"
 '
     param:run
@@ -97,16 +117,21 @@ option:
     local private=true
     [ "$access" = "public" ] && private=false
 
-    local has_issues="${no_issues:+false}";      has_issues="${has_issue:-true}"
-    local has_wiki="${no_wiki:+false}";          has_wiki="${has_wiki:-true}"
-    local has_projects="${no_projects:+false}";  has_projects="${has_projects:-true}"
-    local auto_init="${no_auto_init:+false}";    auto_init="${auto_init:-true}"
+    local has_issues="${no_issues:+false}";                 has_issues="${has_issue:-true}"
+    local has_wiki="${no_wiki:+false}";                     has_wiki="${has_wiki:-true}"
+    local has_projects="${no_projects:+false}";             has_projects="${has_projects:-true}"
+    local auto_init="${no_auto_init:+false}";               auto_init="${auto_init:-true}"
+    local allow_squash_merge="${no_squash_merge:+false}";   allow_squash_merge="${allow_squash_merge:-true}"
+    local allow_merge_commit="${no_merge_commit:+false}";   allow_merge_commit="${allow_merge_commit:-true}"
+    local allow_rebase_merge="${no_rebase_merge:+false}";   allow_rebase_merge="${allow_rebase_merge:-true}"
 
     # TODO:owner may be personal
     local name
     for name in "$@"; do
-        ___x_cmd_gh_post_json "/orgs/$org/repos" name description homepage has_issues \
-                has_wiki has_projects auto_init  visibility="$access" gitignore_template license_template \
+        ___x_cmd_gh_post_json "/orgs/$org/repos" name description homepage team_id \
+                gitignore_template license_template visibility="$access" has_issues \
+                has_projects auto_init is_template allow_squash_merge allow_merge_commit \
+                allow_rebase_merge  allow_auto_merge delete_branch_on_merge \
         | (
             ___x_cmd_git_json_query_rename repo_id=.id url=.html_url repo_owner=.owner.login
             if [ -n "$repo_id" ]; then
@@ -181,7 +206,7 @@ options:
     local i
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
-        # TODO
+        # TODO:http handle，delete repo return data is null
         if ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null; then
             ___x_cmd_ui_tf true  "deleted repo $owner_repo"
         else
