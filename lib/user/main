@@ -48,17 +48,20 @@ type:
     sort = created updated pushed full_name
     direction = desc asc
 options:
-    --visibility    "visibility"        <>:authority="all"
-    --affiliation   "affiliation"       <>:group="organization_member"
-    --sort          "sort"              <>:sort="created"
-    --direction     "direction"         <>:direction="desc"
+    --visibility    "visibility"                                <>:authority="all"
+    --affiliation   "affiliation"                               <>:group="organization_member"
+    --sort          "sort"                                      <>:sort="created"
+    --direction     "direction"                                 <>:direction="desc"
+    --per_page      "Results per page"                          <>=30
+    --page          "Page number of the results to fetch."      <>=1
 '
     param:run
 
     local url
     if [ $# -gt 0 ]; then
-         url="/users/$1/repos"
-    else url="/user/repos"
+        url="/users/$1/repos"
+    else
+        url="/user/repos"
     fi
 
     ___x_cmd_gh_get_multi "$url" visibility affiliation sort direction
