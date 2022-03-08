@@ -34,7 +34,7 @@ ___x_cmd_gh_org_repo_create() {
     param:scope     "github/$O"
     param:dsl       '
 type:
-    access  =   private public internal
+    Access  =   private public internal
 option:
     --org                       "organization create repo"                                             <>:name
     --description               "A short description of the repository."                               <>=""
@@ -42,7 +42,7 @@ option:
     --team_id                   "the id of the team that will be granted access to this repository"    <>=""
     --gitignore_template        "Desired language or platform"                                         <>:Ignore=""
     --license_template          "The license keyword of the open source license for this repository."  <>:License=""
-    --access                    "Can be public or private."                                            <>:access=private
+    --access                    "Can be public or private."                                            <>:Access=private
     --no_issues                 "Whether to disable issue"
     --no_projects               "Whether to disable has_projects"
     --no_wiki                   "Whether to disable wiki"
