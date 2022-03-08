@@ -97,7 +97,7 @@ subcmd:
     ls              "list member"
     user            "get org member user info"
     add             "add member"
-    del|remove      "Remove member"
+    rm              "Remove member"
 '
     param:run
 
@@ -167,7 +167,7 @@ options:
     done
 }
 
-___x_cmd_gh_org_member_del() {
+___x_cmd_gh_org_member_rm() {
     param:scope     "github/$O"
     param:dsl       '
 options:

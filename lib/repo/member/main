@@ -12,7 +12,7 @@ ___x_cmd_gh_repo_member(){
 subcmd:
     ls              "list member"
     add             "add member"
-    del|remove      "Remove member"
+    rm              "Remove member"
 '
     param:run
 
@@ -68,7 +68,7 @@ options:
     done
 }
 
-___x_cmd_gh_repo_member_del() {
+___x_cmd_gh_repo_member_rm() {
     param:scope     "github/$O"
     param:dsl       '
 options:

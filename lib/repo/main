@@ -8,7 +8,7 @@ subcmd:
     create          "create repo"
     ls              "list repo of owner"
     info            "Show detailed information of repo"
-    del             "Remove repo"
+    rm             "Remove repo"
     member          "manage member"
     pr              "manage pr"
 '
@@ -83,7 +83,7 @@ option:
     --homepage              "homepage"                      <>:URL=""
     --access                "private,public"                <>:access=private
     --no_issues             "Provide issue"
-    --no_projects            "Provide has_projects"
+    --no_projects           "Provide has_projects"
     --no_wiki               "Provide wiki"
     --no_auto_init          "auto init README"
     --is_template           "make this repo available as a template" <>:Bool=false
@@ -159,7 +159,7 @@ options:
     ___x_cmd_gh_get "/repos/${owner_repo}" | (
         ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name;
         if [ -n "$id" ]; then
-            ___x_cmd_ui_tf true     "Creating repo $name success" "repo_id: $id" "name: $name" "url: $html_url"
+            ___x_cmd_ui_tf true     "repo $name info:" "repo_id: $id" "name: $name" "url: $html_url"
         else
             ___x_cmd_ui_tf false    "Fail. Couldn't find any repo: ${owner_repo}"
             return 1
@@ -167,7 +167,7 @@ options:
     )
 }
 
-___x_cmd_gh_repo_del() {
+___x_cmd_gh_repo_rm() {
     param:scope     "github/$O"
     param:dsl       '
 options:
