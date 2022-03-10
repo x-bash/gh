@@ -201,12 +201,12 @@ option:
         return 1
     fi
 
-    local tmp="{security_and_analysis:{}}"
-    xrc json
-    [ -n "$scanning" ] && ___x_cmd_json_put tmp.security_and_analysis.secret_scanning "{\"status\": \"$scanning\"}"
-    [ -n "$advanced_security" ] && ___x_cmd_json_put tmp.security_and_analysis.advanced_security "{\"status\": \"$advanced_security\"}"
-    [ -n "$secret_scanning_push_protection" ] && ___x_cmd_json_put tmp.security_and_analysis.secret_scanning_push_protection "{\"status\": \"$secret_scanning_push_protection\"}"
-    [ "$tmp" = "{security_and_analysis:{}}" ] && tmp=""
+    # local tmp="{security_and_analysis:{}}"
+    # xrc json
+    # [ -n "$scanning" ] && ___x_cmd_json_put tmp.security_and_analysis.secret_scanning "{\"status\": \"$scanning\"}"
+    # [ -n "$advanced_security" ] && ___x_cmd_json_put tmp.security_and_analysis.advanced_security "{\"status\": \"$advanced_security\"}"
+    # [ -n "$secret_scanning_push_protection" ] && ___x_cmd_json_put tmp.security_and_analysis.secret_scanning_push_protection "{\"status\": \"$secret_scanning_push_protection\"}"
+    # [ "$tmp" = "{security_and_analysis:{}}" ] && tmp=""
 
     ___x_cmd_gh_param_init_owner_repo
     local name
@@ -214,7 +214,7 @@ option:
         {
             ___x_cmd_gh_patch_json "/repos/${owner_repo}" private \
                 visibility="$access" description homepage team_id default_branch \
-                security_and_analysis="$tmp" has_issues has_wiki has_projects \
+                has_issues has_wiki has_projects \
                 allow_squash_merge allow_merge_commit allow_rebase_merge archived \
                 allow_auto_merge delete_branch_on_merge is_template allow_forking \
             | (
