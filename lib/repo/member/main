@@ -33,7 +33,7 @@ options:
     --affiliation   "Filter collaborators returned by their affiliation."               <>:Affiliation="all"
     --per_page      "Results per page"                                                  <>=30
     --page          "Page number of the results to fetch."                              <>=1
-    #1|--repo       "Provide owner name and repo name.(default:the current user repo)"  <>:repo
+    #1|--repo       "Provide owner name and repo name.(default:the current user repo)"  <>:RepName
 '
     param:run
     ___x_cmd_gh_param_init_owner_repo
@@ -50,22 +50,23 @@ ___x_cmd_gh_repo_member_add() {
     param:scope     "github/$O"
     param:dsl       '
 options:
-    --repo          "Provide owner name and repo name.(default:the current user repo)"      <>:repo
+    --repo          "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
     --permission    "The permission to grant the collaborator."                             <>:permission=push
     --permissions   "permissions"                                                           <>=""
-    #n              "Username list"                                                         <>
+    --name          "Username list,separated by commas"                                     <>
 '
     param:run
 
-    ___x_cmd_gh_param_init_owner_repo
-    if [ $# -eq 0 ];then
-        printf "%s\n" "At least one user's spatial address is needed"
-        return 1
-    fi
-    local username
-    for username in "$@"; do
-        {
-            ___x_cmd_gh_put_json "/repos/$owner_repo/collaborators/${username##*/}" permission | (
+    local tmpRepo="$repo"
+    local username="$name"
+    while true ;do
+        repo="${tmpRepo%%,*}"
+        tmpRepo="${tmpRepo#*,}"
+        while true;do
+            name="${username%%,*}"
+            username="${username#*,}"
+            ___x_cmd_gh_param_init_owner_repo
+            ___x_cmd_gh_put_json "/repos/$owner_repo/collaborators/${name##*/}" permission | (
             data=___x_cmd_git_json_query .full_name
             if [ -n "$data" ];then
                 ui tf "true" "add $username to $owner_repo successfully"
@@ -74,7 +75,9 @@ options:
                 return 1
             fi
             )
-        }
+            [ "$name" = "$username" ] && break
+        done
+        [ "$repo" = "$tmpRepo" ] && return 0
     done
 }
 
@@ -82,7 +85,7 @@ ___x_cmd_gh_repo_member_rm() {
     param:scope     "github/$O"
     param:dsl       '
 options:
-    --repo      "Provide owner name and repo name.(default:the current user repo)"  <>:repo
+    --repo      "Provide owner name and repo name.(default:the current user repo)"  <>:RepName
     #n          "Username list"
 '
     param:run
