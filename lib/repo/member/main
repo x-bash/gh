@@ -59,19 +59,20 @@ options:
 
     local tmpRepo="$repo"
     local username="$name"
+    # TODO:N to N && 1 TO N & N to 1
     while true ;do
         repo="${tmpRepo%%,*}"
         tmpRepo="${tmpRepo#*,}"
+        ___x_cmd_gh_param_init_owner_repo
         while true;do
             name="${username%%,*}"
             username="${username#*,}"
-            ___x_cmd_gh_param_init_owner_repo
             ___x_cmd_gh_put_json "/repos/$owner_repo/collaborators/${name##*/}" permission | (
-            data=___x_cmd_git_json_query .full_name
-            if [ -n "$data" ];then
-                ui tf "true" "add $username to $owner_repo successfully"
+            ___x_cmd_git_json_query_rename id=.id
+            if [ -n "$id" ];then
+                ui tf "true" "add $name to $repo successfully"
             else
-                gh_log error "add user failure: $username."
+                gh_log error "add user failure: $name."
                 return 1
             fi
             )
