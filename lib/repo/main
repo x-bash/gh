@@ -105,7 +105,6 @@ option:
             allow_rebase_merge=^no_rebase_merge     allow_squash_merge=^no_squash_merge     allow_merge_commit=^no_merge_commit \
             auto_init=^no_auto_init)"
 
-    xrc json
     for name in "$@"; do
         # str_replace "${gen_gh_json}" "%%name%%" "$name" | \
         printf "%s" "${gen_gh_json}" | awk -v name '{ gsub(/%%name%%/, name, $0); print $0 }' | \
@@ -218,7 +217,6 @@ option:
     )"
 
     ___x_cmd_gh_param_init_owner_repo
-    xrc json
     for name in "$@"; do
         name="${name##%/}"
         ___x_cmd_str_replace "${gen_gh_json}" "%%name%%" "$name" |
