@@ -8,7 +8,7 @@ subcmd:
     create          "create repo"
     ls              "list repo of owner"
     info            "Show detailed information of repo"
-    rm             "Remove repo"
+    rm              "Remove repo"
     member          "manage member"
     pr              "manage pr"
 '
@@ -27,7 +27,7 @@ subcmd:
 ___x_cmd_gh_repo_ls() {
     param:void
     local owner_type
-    if [ $# -eq 0 ];then
+    if [ $# -eq 0 ]; then
         owner_type=user
     else
         local owner="$1"
