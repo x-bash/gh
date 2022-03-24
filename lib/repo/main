@@ -49,7 +49,7 @@ options:
 
     ___x_cmd_gh_param_init_owner_repo
 
-    ___x_cmd_gh_get "/repos/${owner_repo}" | (
+    ___x_cmd_gh_http get "/repos/${owner_repo}" | (
         ___x_cmd_git_json_query_rename id=.id html_url=.html_url name=.full_name;
         if [ -n "$id" ]; then
             ___x_cmd_ui_tf true     "repo $name info:" "repo_id: $id" "name: $name" "url: $html_url"
@@ -106,7 +106,7 @@ option:
     for name in "$@"; do
         {
             ___x_cmd_json_put gen_gh_json.name "${name##*/}"
-            ___x_cmd_gh_post "/user/repos" "$gen_gh_json"| (
+            ___x_cmd_gh_http post "/user/repos" "$gen_gh_json"| (
             ___x_cmd_git_json_query_rename id=.id url=.html_url owner=.owner.login
             if [ -n "$id" ];then
                 ___x_cmd_ui_tf true "Creating repo $name success" "repo_id: $id" "repo_owner: $owner" "url: $url"
@@ -134,7 +134,7 @@ options:
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
         # TODO:http handle，delete repo return data is null
-        if ___x_cmd_gh_delete "/repos/$owner_repo" >/dev/null; then
+        if ___x_cmd_gh_http delete "/repos/$owner_repo" >/dev/null; then
             ___x_cmd_ui_tf true  "deleted repo $owner_repo"
         else
             ___x_cmd_ui_tf false "Deleting repo failure: $owner_repo. Probably because it desn't exists."
@@ -198,7 +198,7 @@ option:
     for name in "$@"; do
         {
             ___x_cmd_json_put gen_gh_json.name "${name##*/}"
-            ___x_cmd_gh_patch "/repos/${owner_repo}" "$gen_gh_json"| (
+            ___x_cmd_gh_http patch "/repos/${owner_repo}" "$gen_gh_json"| (
             ___x_cmd_git_json_query_rename id=.id url=.html_url owner=.owner.login
             if [ -n "$id" ];then
                 ___x_cmd_ui_tf true "Creating repo $name success" "repo_id: $id" "repo_owner: $owner" "url: $url"
