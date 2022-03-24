@@ -108,7 +108,7 @@ option:
             auto_init=^no_auto_init)"
 
     for name in "$@"; do
-        # str_replace "${gen_gh_json}" "%%name%%" "$name" | \
+        # ___x_cmd_str_sub "${gen_gh_json}" "%%name%%" "$name" | \
         printf "%s" "${gen_gh_json}" | awk -v name '{ gsub(/%%name%%/, name, $0); print $0 }' | \
         ___x_cmd_gh_http post "/user/repos" | \
         {
@@ -260,7 +260,7 @@ option:
     ___x_cmd_gh_param_init_owner_repo
     for name in "$@"; do
         name="${name##%/}"
-        ___x_cmd_str_replace "${gen_gh_json}" "%%name%%" "$name" | \
+        ___x_cmd_str_sub "${gen_gh_json}" "%%name%%" "$name" | \
             ___x_cmd_gh_http patch "/repos/${owner_repo}" | \
             ___x_cmd_gh_repo_update_json_status_handler
     done
