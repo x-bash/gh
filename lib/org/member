@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 ___x_cmd_gh_org_member(){
-    param:subcmd ___x_cmd_gh_config                 \
+    param:subcmd ___x_cmd_gh_org_member             \
         ls              "list member"               \
         info            "get org member user info"  \
         add             "add member"                \

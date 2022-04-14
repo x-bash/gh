@@ -12,7 +12,7 @@ xrc:inner:lib gh utils resource config token repo/main repo/branch/main current 
 x log init gh
 
 ___x_cmd_gh(){
-    param:subcmd ___x_cmd_gh_config             \
+    param:subcmd ___x_cmd_gh                    \
         repo          "repo command"            \
         current       "set current owner, repo" \
         org           "manage org"              \
