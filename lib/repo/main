@@ -170,6 +170,7 @@ type:
     Access  =   private public
 option:
     --access                    "private,public"                                                        <>:Access=private
+    --owner                     "repo owner"                                                            <>=""
     --description               "description"                                                           <>=""
     --homepage                  "homepage"                                                              <>=""
     --team_id                   "the id of the team that will be granted access to this repository"     <>=""
@@ -230,8 +231,9 @@ option:
         auto_init=^no_auto_init
     )"
 
-    ___x_cmd_gh_param_init_owner_repo
     for name in "$@"; do
+        local repo="$name"
+        ___x_cmd_gh_param_init_owner_repo
         printf "%s" "${gen_gh_json}" | sed s/%%name%%/"${name##%/}"/g | \
             ___x_cmd_gh_http patch "/repos/${owner_repo}" - | \
             ___x_cmd_gh_repo_update_json_status_handler
