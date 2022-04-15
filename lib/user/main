@@ -12,11 +12,9 @@ ___x_cmd_gh_user(){
     param:subcmd:try
     param:run
 
-    if [ -z "$PARAM_SUBCMD" ]; then
-        gh_log warn "Subcmd Not Found."
-        ___x_cmd_gh_user _param_help_doc
-        return 1
-    fi
+    gh_log warn "Subcmd Not Found."
+    ___x_cmd_gh_user _param_help_doc
+    return 1
 }
 
 ___x_cmd_gh_user_info() {
@@ -43,10 +41,7 @@ ___x_cmd_gh_user_repo(){
         ls          "List all repos"
     param:subcmd:try
     param:run
-
-    if [ -z "$PARAM_SUBCMD" ]; then
-        ___x_cmd_gh_user_repo_ls "$@"
-    fi
+    ___x_cmd_gh_user_repo_ls "$@"
 }
 
 ___x_cmd_gh_user_repo_ls() {

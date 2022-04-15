@@ -28,12 +28,9 @@ ___x_cmd_gh(){
     param:subcmd:try
     param:run
 
-
-    if [ -z "${PARAM_SUBCMD}" ]; then
-        gh_log warn "Subcmd Not Found."
-        ___x_cmd_gh _param_help_doc
-        return 1
-    fi
+    gh_log warn "Subcmd Not Found."
+    ___x_cmd_gh _param_help_doc
+    return 1
     # case "${PARAM_SUBCMD}" in
     #     pr|release|member|tag)                                  "___x_cmd_gh_repo_${PARAM_SUBCMD}"   "$@"        ;;
     #     *)                                                      "___x_cmd_gh_${PARAM_SUBCMD}"  "$@"              ;;
