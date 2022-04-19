@@ -138,7 +138,7 @@ options:
     #n      "Provide repo list"    <>
 '
     param:run
-
+    local ___X_CMD_UI_FORM_EXIT_STRATEGY="execute"
     ___x_cmd_ui_form "Are you sure you want to delete repo $*" tf 1 = "yes" "no"
     [ "$tf" != "yes" ] && return
 
@@ -154,6 +154,7 @@ options:
     done
 }
 # EndSection
+
 # Section: Update
 ___x_cmd_gh_repo_update() {
     local O="${O:-GITHUB_DEFAULT}"
@@ -161,9 +162,9 @@ ___x_cmd_gh_repo_update() {
     param:scope     "github/$O"
     param:dsl       '
 type:
-    Access  =   private "" public
+    Access  =   private " " public
 option:
-    --access                    "private,public"                                                        <>:Access=""
+    --access                    "private,public"                                                        <>:Access=sdf
     --repo                      "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
     --name                      "repo alias"                                                            <>:RepName=""
     --description               "description"                                                           <>=""
