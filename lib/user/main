@@ -49,7 +49,7 @@ ___x_cmd_gh_user_repo_ls() {
     param:dsl       '
 options:
     --visibility    "visibility"                                <>:Authority="all"
-    --affiliation   "affiliation"                               <>:UserGroup="organization_member"
+    --affiliation   "affiliation"                               <>:UserGroup="owner"
     --sort          "sort"                                      <>:UserSort="created"
     --direction     "direction"                                 <>:Direction="desc"
     --per_page      "Results per page"                          <>=30

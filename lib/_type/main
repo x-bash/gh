@@ -2,7 +2,7 @@
 # shellcheck disable=SC2039,3043
 # Define in param
 param_type      github     Bool                 =       true   false
-param_type      github     UserGroup            =       owner collaborator organization_member  admin
+param_type      github     UserGroup            =       owner collaborator organization_member "" admin
 param_type      github     UserSort             =       created updated pushed full_name
 param_type      github     Direction            =       desc asc
 param_type      github     Authority            =       all public private
