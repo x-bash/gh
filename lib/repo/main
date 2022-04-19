@@ -163,9 +163,9 @@ ___x_cmd_gh_repo_update() {
     param:scope     "github/$O"
     param:dsl       '
 type:
-    Access  =   private public
+    Access  =   private "" public
 option:
-    --access                    "private,public"                                                        <>:Access=private
+    --access                    "private,public"                                                        <>:Access=""
     --repo                      "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
     --name                      "repo alias"                                                            <>:RepName=""
     --description               "description"                                                           <>=""
@@ -188,8 +188,11 @@ option:
     --is_template               "can be used to generate new repositories"
 '
     param:run
-    local private=true
-    [ "$access" = "public" ] && private=false
+    local private=""
+    [ "$access" = "public" ]  && private=false
+    [ "$access" = "private" ] && private=true
+
+    [ -z "$name" ] && name="$repo"
 
     # true=enable false=disable param:flag2bool \
     #     secret_scanning \
@@ -215,7 +218,7 @@ option:
 
 
     local gen_gh_json
-    gen_gh_json="$(param:option2json -repo +security visibility=access \
+    gen_gh_json="$(param:option2json -repo +private +security visibility=access \
         has_issues=^no_issues                   has_wiki=^no_wiki                       has_projects=^no_projects \
         allow_rebase_merge=^no_rebase_merge     allow_squash_merge=^no_squash_merge     allow_merge_commit=^no_merge_commit \
         auto_init=^no_auto_init
