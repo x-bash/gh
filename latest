@@ -31,10 +31,6 @@ ___x_cmd_gh(){
     gh_log warn "Subcmd Not Found."
     ___x_cmd_gh _param_help_doc
     return 1
-    # case "${PARAM_SUBCMD}" in
-    #     pr|release|member|tag)                                  "___x_cmd_gh_repo_${PARAM_SUBCMD}"   "$@"        ;;
-    #     *)                                                      "___x_cmd_gh_${PARAM_SUBCMD}"  "$@"              ;;
-    # esac
 }
 
 
@@ -45,7 +41,7 @@ ___x_cmd_gh(){
 ____x_cmd_gh_make() {
     param:void
     local O_ORIGINAL=${1:?Provide client name by O environment}
-    local O="___x_cmd_gh_$O_ORIGINAL"
+    local O
 
     http make  'https://api.github.com'
     http header Accept "application/vnd.github.v3+json"

@@ -1,0 +1,32 @@
+# shellcheck shell=sh
+# shellcheck disable=SC2039,3043
+
+___x_cmd_gh_action_workflows(){
+    param:subcmd                                                                                \
+        ls      "lists the workflows in a repository."                                          \
+        info    "gets a specific workflow."                                                     \
+        disable "disables a workflow and sets the state of the workflow to disabled_manually"   \
+        enable  "Enables a workflow and sets the state of the workflow to active"               \
+        create  "create a workflow dispatch event"                                              \
+        flow    "Get billable minutes used by a specific workflow"
+    param:subcmd:try
+    param:run
+    ___x_cmd_gh_action_workflows _param_help_doc
+    return 1
+}
+___x_cmd_gh_action_workflows_ls(){
+    param:scope     "github/$O"
+    param:dsl       '
+options:
+    --owner     ""
+    --repo      ""
+    --per_page  ""
+    --page      ""
+'
+    param:dsl       '
+options:
+    #1|--repo    "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
+'
+    param:run
+}
+# /repos/{owner}/{repo}/actions/workflows
