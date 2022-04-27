@@ -1,32 +1,68 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-___x_cmd_gh_action_workflows(){
-    param:subcmd                                                                                \
-        ls      "lists the workflows in a repository."                                          \
-        info    "gets a specific workflow."                                                     \
-        disable "disables a workflow and sets the state of the workflow to disabled_manually"   \
-        enable  "Enables a workflow and sets the state of the workflow to active"               \
-        create  "create a workflow dispatch event"                                              \
-        flow    "Get billable minutes used by a specific workflow"
+___x_cmd_gh_action_workflows() {
+    param:subcmd \
+        ls "lists the workflows in a repository." \
+        info "gets a specific workflow." \
+        disable "disables a workflow and sets the state of the workflow to disabled_manually" \
+        enable "Enables a workflow and sets the state of the workflow to active" \
+        create "create a workflow dispatch event" \
+        flow "Get billable minutes used by a specific workflow"
     param:subcmd:try
     param:run
     ___x_cmd_gh_action_workflows _param_help_doc
     return 1
 }
-___x_cmd_gh_action_workflows_ls(){
-    param:scope     "github/$O"
-    param:dsl       '
+
+___x_cmd_gh_action_workflows_ls() {
+    param:scope "github/$O"
+    param:dsl '
 options:
-    --owner     ""
-    --repo      ""
-    --per_page  ""
-    --page      ""
-'
-    param:dsl       '
-options:
-    #1|--repo    "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
+    --owner     ""                                                                      <>=""
+    --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
+    --actor     "returns someone workflow runs."                                        <>=""
+    --branch    "Returns workflow runs associated with a branch."                       <>=""
+    --event     "Returns workflow run triggered by the event you specify."              <>=""
+    -sta|--status    "Returns workflow runs with the check run status."                 <>=""
+    --per_page  "Results per page (max 100)"                                            <>=""
+    --page      "Page number of the results to fetch."                                  <>=""
+    --created   "Returns workflow runs created within the given date-time range."       <>=""
+    --check_suite_id  "Returns workflow runs with the check_suite_id that you specify." <>=""
+    --exclude_pull_requests
 '
     param:run
+    ___x_cmd_gh_param_init_owner_repo
+    if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Created=.created_at Event=.event Url=.html_url \
+        -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
+            sta per_page page created check_suite_id exclude_pull_requests| x jo .workflow_runs" ;then
+        return 0
+    fi
+    ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
 }
-# /repos/{owner}/{repo}/actions/workflows
+
+# ___x_cmd_gh_action_workflows_ls() {
+#     param:scope "github/$O"
+#     param:dsl '
+# options:
+#     --owner     ""                                                                      <>=""
+#     --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
+#     --actor     "returns someone workflow runs."                                        <>=""
+#     --branch    "Returns workflow runs associated with a branch."                       <>=""
+#     --event     "Returns workflow run triggered by the event you specify."              <>=""
+#     -sta|--status    "Returns workflow runs with the check run status."                 <>=""
+#     --per_page  "Results per page (max 100)"                                            <>=""
+#     --page      "Page number of the results to fetch."                                  <>=""
+#     --created   "Returns workflow runs created within the given date-time range."       <>=""
+#     --check_suite_id  "Returns workflow runs with the check_suite_id that you specify." <>=""
+#     --exclude_pull_requests
+# '
+#     param:run
+#     ___x_cmd_gh_param_init_owner_repo
+#     if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Event=.event Url=.html_url \
+#         -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
+#             sta per_page page created check_suite_id exclude_pull_requests| x jo .workflow_runs" ;then
+#         return 0
+#     fi
+#     ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
+# }

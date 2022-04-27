@@ -1,7 +1,7 @@
 # shellcheck shell=sh disable=SC2039,SC2142,SC3043
 xrc gh
 x jq --help 1>/dev/null 2>&1
-gh token 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
+gh token "$(test_github)"
 test_repo_main(){
     local repoName
     repoName="$(date +%s)"
