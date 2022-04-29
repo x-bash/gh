@@ -50,11 +50,7 @@ options:
     ___x_cmd_gh_param_init_owner_repo
     if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Created=.created_at Event=.event Url=.html_url \
         -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
-            sta per_page page created check_suite_id exclude_pull_requests | x jo .workflow_runs" ;then
-        local IFS="/003"
-        while "$___X_CMD_UI_TABLE_FINAL_COMMAND"; do
-        :
-        done
+            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs ." ;then
         return 0
     fi
     ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
@@ -74,7 +70,7 @@ options:
     param:run
     ___x_cmd_gh_param_init_owner_repo
     if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Created=.created_at Event=.event Url=.html_url \
-        -- "___x_cmd_gh_http get /repos/${owner_repo}/actions/runs/${run_id}/jobs filter per_page page | x jo .jobs" ;then
+        -- "___x_cmd_gh_http get /repos/${owner_repo}/actions/runs/${run_id}/jobs filter per_page page | x jo q0 .jobs ." ;then
         return 0
     fi
     ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page
@@ -94,13 +90,12 @@ options:
 }
 
 ___x_cmd_gh_action_workflows_job_log() {
-    param_default "github/$O"
     param:scope "github/$O"
     param:dsl '
 options:
     --owner     ""                                                                      <>=""
     --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepName
-    --run_id    ""  <>=""
+    --job_id    ""  <>=""
 '
     param:run
     ___x_cmd_gh_param_init_owner_repo
