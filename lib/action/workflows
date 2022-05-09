@@ -1,7 +1,7 @@
 # shellcheck shell=sh
 # shellcheck disable=SC2039,3043
 
-___x_cmd_gh_action_workflows() {
+___x_cmd_gh_workflows() {
     param:subcmd                                    \
         ls "lists the workflows in a repository."   \
         info "gets a specific workflow."            \
@@ -31,6 +31,8 @@ options:
 }
 
 ___x_cmd_gh_action_workflows_ls() {
+    local repo
+    repo="$(git config --get remote.origin.url)"
     param:scope "github/$O"
     param:dsl '
 options:
@@ -50,7 +52,7 @@ options:
     ___x_cmd_gh_param_init_owner_repo
     if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Created=.created_at Event=.event Url=.html_url \
         -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
-            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs ." ;then
+            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs" ;then
         return 0
     fi
     ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
@@ -70,7 +72,7 @@ options:
     param:run
     ___x_cmd_gh_param_init_owner_repo
     if [ -t 1 ] && ___ui_table_json Id=.id Status=.status Created=.created_at Event=.event Url=.html_url \
-        -- "___x_cmd_gh_http get /repos/${owner_repo}/actions/runs/${run_id}/jobs filter per_page page | x jo q0 .jobs ." ;then
+        -- "___x_cmd_gh_http get /repos/${owner_repo}/actions/runs/${run_id}/jobs filter per_page page | x jo q0 .jobs" ;then
         return 0
     fi
     ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page

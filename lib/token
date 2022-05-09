@@ -39,17 +39,16 @@ ___x_cmd_gh_token(){
 
 }
 
-____x_cmd_gh_auth(){
+___x_cmd_gh_auth(){
     param:subcmd ____x_cmd_gh_auth                      \
-        login:      "Authenticate with a GitHub host"   \
-        logout:     "Log out of a GitHub host"          \
-        status:     "View authentication status"        \
-        setup-git:  "Configure git to use GitHub CLI as a credential helper"
+        login  "Authenticate with a GitHub host"
     param:subcmd:try
     param:run
-
+# logout:     "Log out of a GitHub host"
+# status:     "View authentication status"
+# setup-git:  "Configure git to use GitHub CLI as a credential helper"
     gh_log warn "Subcmd Not Found."
-    ____x_cmd_gh_auth _param_help_doc
+    ___x_cmd_gh_auth _param_help_doc
     return 1
 }
 
