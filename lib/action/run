@@ -1,0 +1,74 @@
+# shellcheck shell=sh
+# shellcheck disable=SC2039,3043
+___x_cmd_gh_run_ls() {
+    param:scope "github/$O"
+    param:dsl <<A
+options:
+    --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepoName="$(_____x_cmd_git_repo)"
+    --actor     "returns someone workflow runs."                                        <>=""
+    --branch    "Returns workflow runs associated with a branch."                       <>="$(_____x_cmd_git_branch)"
+    --event     "Returns workflow run triggered by the event you specify."              <>=""
+    --sta|--status    "Returns workflow runs with the check run status."                <>=""
+    --per_page  "Results per page (max 100)"                                            <>=""
+    --page      "Page number of the results to fetch."                                  <>=""
+    --created   "Returns workflow runs created within the given date-time range."       <>=""
+    --check_suite_id  "Returns workflow runs with the check_suite_id that you specify." <>=""
+    --exclude_pull_requests
+A
+    param:run
+    ___x_cmd_gh_param_init_owner_repo
+    if [ -t 1 ] && ___ui_table_json Id=.id Conclusion=.conclusion Created=.created_at Event=.event Branch=.head_branch  \
+        -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
+            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs" ;then
+        return 0
+    fi
+    ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
+}
+
+___x_cmd_gh_run_view() {
+    param:scope "github/$O"
+    param_type github runID - <<A
+$(_____x_cmd_run_options)
+A
+    param:dsl <<A
+type:
+    Filters = latest all
+options:
+    --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepoName="$(_____x_cmd_git_repo)"
+    --run_id    "Provide run_id"                                                        <>:runID=
+    --filter    "Filters jobs by their completed_at timestamp"                          <>:Filters="latest"
+    --per_page  "Results per page (max 100)"                                            <>=""
+    --page      "Page number of the results to fetch."                                  <>=""
+A
+    param:run
+    ___x_cmd_gh_param_init_owner_repo
+    run_id=${run_id%%,*}
+    ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page | (
+        # x jo env .jobs.\* .id job_c=.conclusion job_name=.name .jobs.\*.steps.\* .name .conclusion  -- 'x ui tf "$conclusion" "$name (ID $id)"'
+        x jo env .jobs.\*.steps.\* .name .conclusion -- 'x ui tf "$conclusion" "$name"'
+    )
+}
+
+___x_cmd_gh_run_log() {
+    param:scope "github/$O"
+    param_type github runID - <<A
+$(_____x_cmd_run_options)
+A
+    param:dsl <<A
+type:
+    Filters = latest all
+options:
+    --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepoName="$(_____x_cmd_git_repo)"
+    --run_id    "Provide run_id"                                                        <>:runID
+    --logall    ""
+A
+    param:run
+    ___x_cmd_gh_param_init_owner_repo
+    run_id=${run_id%%,*}
+    ___x_cmd_gh_http download "/repos/${owner_repo}/actions/runs/${run_id}/logs"  "$___X_CMD_ROOT/.actions/log.zip"
+}
+_____x_cmd_run_options(){
+    ___x_cmd_gh_run_ls | (
+        x jo env .workflow_runs.\* .id .name .conclusion .created_at -- 'printf "%s\n" "$id,$name,$created_at"'
+    )
+}
