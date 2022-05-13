@@ -69,7 +69,18 @@ A
         ___x_cmd_ui_gridselect _____x_cmd_run_options
         run_id=${___X_CMD_UI_GRIDSELECT_CURRENT_ITEM%%,*}
     fi
-    ___x_cmd_gh_http download "/repos/${owner_repo}/actions/runs/${run_id}/logs" "$___X_CMD_ROOT/.actions/log.zip"
+
+    if ___x_cmd_gh_http download "/repos/${owner_repo}/actions/runs/${run_id}/logs" "$___X_CMD_ROOT/.actions/$run_id/log.zip";then
+        x uz "$___X_CMD_ROOT/.actions/$run_id/log.zip" "$___X_CMD_ROOT/.actions/$run_id"
+        cat "$___X_CMD_ROOT"/.actions/*/* | awk '{
+          date=substr($0, 3, 8)
+          time=substr($0, 12, 8)
+          idx=index($0, " ")
+          gsub("-", "/", date)
+          print "\033[90m" date "/" time "\033[0m" substr($0, idx)
+      }' | less -r
+      rm -rf "$___X_CMD_ROOT/.actions/$run_id"
+    fi
 }
 _____x_cmd_run_options() {
     printf "%s\n" "Select a workflow run:
@@ -79,21 +90,4 @@ $(___x_cmd_gh_run_ls | (
 ---
 ---
     "
-}
-fff() {
-    local name
-    local conclusion
-    local if_open
-    local ___X_CMD_UI_FORM_EXIT_STRATEGY="execute"
-    cat "a.json" | x jo env .steps.\* .name .conclusion -- 'x ui tf "$conclusion" "$name"'
-    x ui form nohelp "Do you want to open the logs file ?" if_open 1 = "yes" "no"
-    if [ "$if_open" = "yes" ]; then
-        cat ".logs 日志文件" | awk '{
-          date=substr($0, 3, 8)
-          time=substr($0, 12, 8)
-          idx=index($0, " ")
-          gsub("-", "/", date)
-          print "\033[90m" date "/" time "\033[0m" substr($0, idx)
-      }' | less -r
-    fi
 }
