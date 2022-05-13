@@ -43,10 +43,13 @@ A
     param:run
     ___x_cmd_gh_param_init_owner_repo
     run_id=${run_id%%,*}
-    ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page | (
-        # x jo env .jobs.\* .id job_c=.conclusion job_name=.name .jobs.\*.steps.\* .name .conclusion  -- 'x ui tf "$conclusion" "$name (ID $id)"'
-        x jo env .jobs.\*.steps.\* .name .conclusion -- 'x ui tf "$conclusion" "$name"'
-    )
+    if [ -t 1 ] && ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page | (
+            printf "%s\n" "JOBS";
+            x jo env .jobs.\* .id .name .conclusion -- 'x ui tf "$conclusion" "$name (ID $id)"'
+        );then
+        return 0
+    fi
+    ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page
 }
 
 ___x_cmd_gh_run_log() {
@@ -71,4 +74,21 @@ _____x_cmd_run_options(){
     ___x_cmd_gh_run_ls | (
         x jo env .workflow_runs.\* .id .name .conclusion .created_at -- 'printf "%s\n" "$id,$name,$created_at"'
     )
+}
+fff(){
+    local name
+    local conclusion
+    local if_open
+    local ___X_CMD_UI_FORM_EXIT_STRATEGY="execute"
+    cat "a.json" | x jo env .steps.\* .name .conclusion -- 'x ui tf "$conclusion" "$name"'
+    x ui form nohelp "Do you want to open the logs file ?" if_open 1 = "yes" "no"
+    if [ "$if_open" = "yes" ]; then
+      cat ".logs 日志文件" | awk '{
+          date=substr($0, 3, 8)
+          time=substr($0, 12, 8)
+          idx=index($0, " ")
+          gsub("-", "/", date)
+          print "\033[90m" date "/" time "\033[0m" substr($0, idx)
+      }' | less -r
+    fi
 }
