@@ -17,9 +17,9 @@ options:
 A
     param:run
     ___x_cmd_gh_param_init_owner_repo
-    if [ -t 1 ] && ___ui_table_json Id=.id Conclusion=.conclusion Created=.created_at Event=.event Branch=.head_branch  \
+    if [ -t 1 ] && ___ui_table_json Id=.id Conclusion=.conclusion Created=.created_at Event=.event Branch=.head_branch \
         -- "___x_cmd_gh_http get repos/$owner_repo/actions/runs actor branch event \
-            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs" ;then
+            sta per_page page created check_suite_id exclude_pull_requests | x jo q0 .workflow_runs"; then
         return 0
     fi
     ___x_cmd_gh_http get "repos/$owner_repo/actions/runs" actor branch event sta per_page page created check_suite_id exclude_pull_requests
@@ -44,9 +44,9 @@ A
     ___x_cmd_gh_param_init_owner_repo
     run_id=${run_id%%,*}
     if [ -t 1 ] && ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page | (
-            printf "%s\n" "JOBS";
-            x jo env .jobs.\* .id .name .conclusion -- 'x ui tf "$conclusion" "$name (ID $id)"'
-        );then
+        printf "%s\n" "JOBS"
+        x jo env .jobs.\* .id .name .conclusion -- 'x ui tf "$conclusion" "$name (ID $id)"'
+    ); then
         return 0
     fi
     ___x_cmd_gh_http get "/repos/${owner_repo}/actions/runs/${run_id}/jobs" filter per_page page
@@ -54,28 +54,33 @@ A
 
 ___x_cmd_gh_run_log() {
     param:scope "github/$O"
-    param_type github runID - <<A
-$(_____x_cmd_run_options)
-A
     param:dsl <<A
 type:
     Filters = latest all
 options:
     --repo      "Provide owner name and repo name.(default:the current user repo)"      <>:RepoName="$(_____x_cmd_git_repo)"
-    --run_id    "Provide run_id"                                                        <>:runID
+    --run_id    "Provide run_id"                                                        <>=""
     --logall    ""
 A
     param:run
     ___x_cmd_gh_param_init_owner_repo
-    run_id=${run_id%%,*}
-    ___x_cmd_gh_http download "/repos/${owner_repo}/actions/runs/${run_id}/logs"  "$___X_CMD_ROOT/.actions/log.zip"
+
+    if [ -z "$run_id" ]; then
+        ___x_cmd_ui_gridselect _____x_cmd_run_options
+        run_id=${___X_CMD_UI_GRIDSELECT_CURRENT_ITEM%%,*}
+    fi
+    ___x_cmd_gh_http download "/repos/${owner_repo}/actions/runs/${run_id}/logs" "$___X_CMD_ROOT/.actions/log.zip"
 }
-_____x_cmd_run_options(){
-    ___x_cmd_gh_run_ls | (
+_____x_cmd_run_options() {
+    printf "%s\n" "Select a workflow run:
+$(___x_cmd_gh_run_ls | (
         x jo env .workflow_runs.\* .id .name .conclusion .created_at -- 'printf "%s\n" "$id,$name,$created_at"'
-    )
+    ))
+---
+---
+    "
 }
-fff(){
+fff() {
     local name
     local conclusion
     local if_open
@@ -83,7 +88,7 @@ fff(){
     cat "a.json" | x jo env .steps.\* .name .conclusion -- 'x ui tf "$conclusion" "$name"'
     x ui form nohelp "Do you want to open the logs file ?" if_open 1 = "yes" "no"
     if [ "$if_open" = "yes" ]; then
-      cat ".logs 日志文件" | awk '{
+        cat ".logs 日志文件" | awk '{
           date=substr($0, 3, 8)
           time=substr($0, 12, 8)
           idx=index($0, " ")
