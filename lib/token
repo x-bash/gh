@@ -7,7 +7,7 @@
 
 ___x_cmd_gh_token(){
     param:void
-    local O="${O:-GITHUB_DEFAULT}"
+    local O="___x_cmd_gh_${O:-GITHUB_DEFAULT}"
     if [ $# -eq 0 ]; then
         ___x_cmd_gh_config_get "oauth_token"  || return 1
         return 0

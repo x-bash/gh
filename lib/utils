@@ -85,7 +85,7 @@ ___x_cmd_gh_param_normalize_repo() {
 ### Repo #1
 
 ___x_cmd_gh_parse_owner_repo() {
-    local O="${O:-GITHUB_DEFAULT}"
+    local O="___x_cmd_gh_${O:-GITHUB_DEFAULT}"
     if [ -z "$repo" ]; then
         repo="$(___x_cmd_gh_current_repo)"
     fi
