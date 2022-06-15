@@ -52,32 +52,32 @@ ___x_cmd_gh_auth(){
     return 1
 }
 
-____x_cmd_gh_auth_permission(){
-    printf "%s\n" "
-user
-gist
-repo
-workflow
-delete_repo
-delete:packages
-write:packages
-write:discussion
-notifications
-admin:org
-admin:gpg_key
-admin:org_hook
-admin:repo_hook
-admin:public_key
-admin:enterprise
----
----"
-}
+# ____x_cmd_gh_auth_permission(){
+#     printf "%s\n" "
+# user
+# gist
+# repo
+# workflow
+# delete_repo
+# delete:packages
+# write:packages
+# write:discussion
+# notifications
+# admin:org
+# admin:gpg_key
+# admin:org_hook
+# admin:repo_hook
+# admin:public_key
+# admin:enterprise
+# ---
+# ---"
+# }
 ____x_cmd_gh_auth_login(){
     param:void
     local O="____x_cmd_login_GITHUB"
     local client_id=3d0f25caedcc0e18c985
     local grant_type="urn:ietf:params:oauth:grant-type:device_code"
-    ___x_cmd_ui_gridselect multiple ____x_cmd_gh_auth_permission
+    # ___x_cmd_ui_gridselect multiple ____x_cmd_gh_auth_permission
     local scope="all"
     # TODO:table scope
 
