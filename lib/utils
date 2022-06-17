@@ -107,10 +107,8 @@ _____x_cmd_git_branch(){
 }
 
 ___gh_ui_mutual(){
-    local tmp="$1"
-    shift
     if [ -t 1 ]; then
-        eval "$tmp"
+        eval "$(cat)"
     else
         "$@"
     fi
