@@ -63,18 +63,14 @@ options:
     else
         url="/user/repos"
     fi
-
-    if [ -t 1 ] && ___ui_table_json Id=.id Name=.name Owner=.owner.login Url=.html_url \
-        -- "___x_cmd_gh_http" "get" "$url" visibility affiliation sort direction;then
-        return 0
-    fi
-    ___x_cmd_gh_http get "$url" visibility affiliation sort direction && return 0
+    ___gh_ui_mutual "___ui_table_json Id=.id Name=.name Owner=.owner.login Url=.html_url -- \$@" \
+             ___x_cmd_gh_http get "$url" visibility affiliation sort direction
 }
 
 ___x_cmd_gh_user_email(){
     param:void
-    [ -t 1 ] && ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/emails\")\"" \
-        . email state && return
+    [ -t 1 ] && ___ui_table_json  ___x_cmd_gh_get_multi "/emails" \
+        email=.email state=.state && return 0
 
     ___x_cmd_gh_get_multi "/emails"
 }
