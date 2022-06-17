@@ -108,7 +108,10 @@ _____x_cmd_git_branch(){
 
 ___gh_ui_mutual(){
     if [ -t 1 ]; then
-        eval "$(cat)"
+       if ! eval "$(cat)" && [ -n "$___gh_error_msg" ];then
+            ___x_cmd_ui_tf false "$___gh_error_msg"
+            return 1
+       fi
     else
         "$@"
     fi
