@@ -23,8 +23,8 @@ subcmd:
         gh_log error "Command Not Found. Show help."
         return 0
     fi
-    
-    "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@" 
+
+    "___x_cmd_gh_repo_${PARAM_SUBCMD}" "$@"
 }
 
 # arguments NAME
@@ -78,9 +78,9 @@ option:
             $data
 A
             if [ -n "$repo_id" ];then
-                ui tf "true" "Creating repo $name success" "repo_id:$repo_id" "url:$url" "repo_owner:$repo_owner" 
+                ___x_cmd_ui tf "true" "Creating repo $name success" "repo_id:$repo_id" "url:$url" "repo_owner:$repo_owner"
             else
-                gh_log error "Creating repo failure: $name. Code is $code. " 
+                gh_log error "Creating repo failure: $name. Code is $code. "
             fi
         }
     done
@@ -144,7 +144,7 @@ option:
                 # ___x_cmd_gh_resp_header "" >&2
                 return $code
             fi
-        } 
+        }
     done
 }
 
@@ -259,14 +259,14 @@ options:
 '
     param:run
     local confirm
-    confirm=$(ui select "text" "Are you sure you want to delete repo $*" "yes" "no")
+    confirm=$(___x_cmd_ui select "text" "Are you sure you want to delete repo $*" "yes" "no")
     [ "$confirm" = "no" ] && return
     local i
     for i in "$@"; do
         ___x_cmd_gh_param_normalize_repo "$i"
-        ___x_cmd_gh_delete "/v5/repos/$owner_repo" >/dev/null 
+        ___x_cmd_gh_delete "/v5/repos/$owner_repo" >/dev/null
         if [ $? -eq 0 ]; then
-            ui tf "true" "deleted repo $i"
+            ___x_cmd_ui tf "true" "deleted repo $i"
         else
             gh_log error "Code is $?. Deleting repo failure: $i. Probably because it desn't exists."
         fi
@@ -283,9 +283,9 @@ options:
 
     ___x_cmd_gh_param_init_owner_repo
     local confirm
-    confirm=$(ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
+    confirm=$(___x_cmd_ui select "text" "Are you sure you want to clear repo ${owner_repo}" "yes" "no")
     [ "$confirm" = "no" ] && return
-    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/clear" && ui tf "true" "Successfully clear ${owner_repo}" && return
+    ___x_cmd_gh_put_json "/v5/repos/${owner_repo}/clear" && ___x_cmd_ui tf "true" "Successfully clear ${owner_repo}" && return
     gh_log error "clear repo failure: $owner_repo"
 }
 

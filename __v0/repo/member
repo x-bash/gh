@@ -20,7 +20,7 @@ subcmd:
         gh_log error "subcommand not found. show help."
         return 0
     fi
-    
+
     "___x_cmd_gh_repo_member_$PARAM_SUBCMD" "$@"
 }
 
@@ -32,7 +32,7 @@ options:
 '
     param:run
     ___x_cmd_gh_param_init_owner_repo
-    ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/repos/${owner_repo}/collaborators\" page per_page)\"" \
+    ___x_cmd_ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/repos/${owner_repo}/collaborators\" page per_page)\"" \
         . id login name push=permissions.push admin=permissions.admin
 }
 
@@ -59,9 +59,9 @@ options:
             if [ $code -ne 0 ]; then
                 gh_log error "add user failure: $username. Code is $code. "
             else
-                ui tf "true" "add $username to $owner_repo successfully"
+                ___x_cmd_ui tf "true" "add $username to $owner_repo successfully"
             fi
-        }  
+        }
     done
 }
 
@@ -83,7 +83,7 @@ options:
         if [ $? -ne 0 ];then
             gh_log error "delete user failure: $username."
         else
-            ui tf "true" "successfully deleted $username in $owner_repo"
+            ___x_cmd_ui tf "true" "successfully deleted $username in $owner_repo"
         fi
     done
 }

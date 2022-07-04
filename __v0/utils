@@ -5,16 +5,16 @@
 # Section 2: Wrapping std/http module with object naming changing
 ############################
 ___x_cmd_gh_resp_header() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp header "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp header "$@"
 }
 
 # TODO: Not supported yet
 ___x_cmd_gh_resp_body() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp body "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" resp body "$@"
 }
 
 ___x_cmd_gh_get() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" get "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" get "$@"
 }
 
 ___x_cmd_gh_get_multi() {
@@ -22,7 +22,7 @@ ___x_cmd_gh_get_multi() {
         ___x_cmd_gh_get "$@" page per_page
         return
     fi
-    local i=1 
+    local i=1
     local total_page=100000
     while [ "$i" -le "$total_page" ]; do
         ___x_cmd_gh_get "$@" page="$i" per_page=100
@@ -34,27 +34,27 @@ ___x_cmd_gh_get_multi() {
 }
 
 ___x_cmd_gh_post_json() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" post  json "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" post  json "$@"
 }
 
 ___x_cmd_gh_put_json() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" put json "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" put json "$@"
 }
 
 ___x_cmd_gh_patch_json() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" patch json "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" patch json "$@"
 }
 
 ___x_cmd_gh_delete() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" delete "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" delete "$@"
 }
 
 ___x_cmd_gh_dict_get() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
 }
 
 ___x_cmd_gh_dict_put() {
-    http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
+    ___x_cmd_http "@___x_cmd_gh_${O:-GITHUB_DEFAULT}" dict "$@"
 }
 
 
@@ -124,7 +124,7 @@ ___x_cmd_gh_table() {
     local tmp
     tmp=$1
     shift
-    echo "$tmp" 2>&1 | ui table jsonfmt "$@"
+    echo "$tmp" 2>&1 | ___x_cmd_ui table jsonfmt "$@"
 }
 
 ___x_cmd_gh_json_query(){

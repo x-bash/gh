@@ -19,7 +19,7 @@ subcmd:
         gh_log error "Command Not Found. Show help."
         return 0
     fi
-      
+
     "___x_cmd_gh_org_${PARAM_SUBCMD}" "$@"
 }
 
@@ -40,7 +40,7 @@ ___x_cmd_gh_org_new() {
 ___x_cmd_gh_org_info() {
     param:scope     "github/$O"
     param:dsl       '
-type: 
+type:
 options:
     --admin      "admin"       <>:bool
 '
@@ -68,7 +68,7 @@ options:
 '
     param:run
     org=${org:-$1}
-    ___x_cmd_gh_post_json "/v5/users/organization" name="$1" org description  
+    ___x_cmd_gh_post_json "/v5/users/organization" name="$1" org description
 }
 
 ___x_cmd_gh_org_repo(){
@@ -93,7 +93,7 @@ options:
     --type     "type"     <>="all"    = all private public
 '
     param:run
-    # ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/orgs/${1:?Provide organization}/repos\" type)\"" \
+    # ___x_cmd_ui table func ___x_cmd_gh_table "\"\$(O=$O ___x_cmd_gh_get_multi \"/v5/orgs/${1:?Provide organization}/repos\" type)\"" \
     #     . id full_name ownerName=owner.name updatedTime="updated_at"
     ___x_cmd_gh_get_multi "/v5/orgs/${1:?Provide organization}/repos" type
 }
@@ -117,7 +117,7 @@ options:
                 echo "Creating repo failure: $name. Code is $code. " >&2
                 return $code
             fi
-        }  
+        }
     done
 }
 
@@ -146,7 +146,7 @@ subcmd:
         echo "subcommand not found. show help." >&2
         return 0
     fi
-    
+
     "___x_cmd_gh_org_member_$PARAM_SUBCMD" "$@"
 }
 
@@ -158,7 +158,7 @@ options:
     --role          "Repo name"            <>="all"         = admin member all
 '
     param:run
-    ___x_cmd_gh_get_multi "/v5/orgs/${org##*/}/members" role page per_page  
+    ___x_cmd_gh_get_multi "/v5/orgs/${org##*/}/members" role page per_page
 }
 
 ___x_cmd_gh_org_member_user() {
@@ -170,13 +170,13 @@ options:
 '
     param:run
 
-    ___x_cmd_gh_get "/v5/orgs/${org##*/}/memberships/${username##*/}"  
+    ___x_cmd_gh_get "/v5/orgs/${org##*/}/memberships/${username##*/}"
 }
 
 ___x_cmd_gh_org_member_add() {
     param:scope     "github/$O"
     param:dsl       '
-type: 
+type:
     role = admin member
 options:
     --org           "org"       <>:address
@@ -199,7 +199,7 @@ options:
                 echo "Creating repo failure: $username. Code is $code. " >&2
                 return $code
             fi
-        }  
+        }
     done
 }
 
@@ -226,7 +226,7 @@ options:
                 echo "Creating repo failure: $name. Code is $code. " >&2
                 return $code
             fi
-        }  
+        }
     done
 }
 
