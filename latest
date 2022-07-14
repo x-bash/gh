@@ -3,7 +3,7 @@
 
 # author:       Li Junhao           l@x-cmd.com
 
-xrc http param str ui
+xrc http param ui
 xrc ui/lib/table
 
 xrc:inner:lib gh utils resource config token repo/main repo/branch/main current user/main org/main \
