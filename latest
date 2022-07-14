@@ -50,9 +50,8 @@ ____x_cmd_gh_make() {
 
     if [ -n "$token" ]; then
         ___x_cmd_http header put Authorization "token $token"
-        local user
-        user="$(___x_cmd_gh_current_owner)" || return 1
-        gh_log info "Hi $user! You've successfully authenticated."
+        ___x_cmd_gh_current_owner 1>/dev/null || return 1
+        gh_log info "Hi $___X_CMD_GITHUB_DEFAULT_OWNER! You've successfully authenticated."
         return 0
     fi
 
