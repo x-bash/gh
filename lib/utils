@@ -69,7 +69,8 @@ ___x_cmd_gh_default(){
 _____x_cmd_git_repo(){
     local repo
     repo="$(git config --get remote.origin.url 2>/dev/null)"
-    repo="${repo##*:}"
+    repo="${repo##*".com:"}"
+    repo="${repo##*".com/"}"
     repo="${repo%.*}"
     printf "%s" "$repo"
 }
